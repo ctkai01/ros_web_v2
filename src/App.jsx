@@ -1,31 +1,7 @@
 // src/App.jsx
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout"; // <-- 1. Import Layout của bạn
-
-// 2. Import các trang của bạn (hoặc tạo giả để test)
-// Ví dụ: import DashboardPage from './pages/Dashboard';
-// Hoặc tạo giả:
-const DashboardPage = () => (
-  <h1 className="text-3xl font-bold dark:text-white">Dashboard Content</h1>
-);
-const MonitoringPage = () => (
-  <h1 className="text-3xl font-bold dark:text-white">Monitoring Content</h1>
-);
-const AiListPage = () => (
-  <h1 className="text-3xl font-bold dark:text-white">AI List Content</h1>
-);
-const SystemPage = () => (
-  <h1 className="text-3xl font-bold dark:text-white">System Content</h1>
-);
-const HelpPage = () => (
-  <h1 className="text-3xl font-bold dark:text-white">Help Content</h1>
-);
-const LogoutPage = () => (
-  <h1 className="text-3xl font-bold dark:text-white">Logout Content</h1>
-);
-
-// Chúng ta sẽ import Layout của Setup như đã nói
-// import SetupLayout from "./pages/setup/SetupLayout";
+import { DashboardCreate, DashboardHome, DashboardView } from "./pages/dashboard";
 
 function App() {
   return (
@@ -33,9 +9,19 @@ function App() {
       {/* 3. TẠO MỘT ROUTE CHA DÙNG `Layout` */}
       <Route path="/" element={<Layout />}>
         {/* 4. LỒNG TẤT CẢ CÁC TRANG CON VÀO TRONG */}
-
-        {/* Route mặc định (khi vào "/") sẽ tự chuyển đến "/dashboard" */}
+        {/* Route mặc định -> chuyển đến trang con đầu tiên */}
         {/* <Route index element={<Navigate to="/dashboard" replace />} /> */}
+        <Route index element={<Navigate to="/dashboard/list" replace />} />
+        {/* --- Nhóm Dashboard --- */}
+        <Route path="dashboard/list" element={<DashboardHome />} />
+        <Route path="dashboard/test" element={<div>Test</div>} />
+        <Route path="dashboard/nam" element={<div>Trang của Nam</div>} />
+        <Route path="dashboard/create" element={<DashboardCreate />} />
+        <Route path="dashboard/view/:id" element={<DashboardView />} />
+
+        {/* <Route path="dashboard" element={<DashboardHome />} />
+        <Route path="dashboard/test" element={<div>Test</div>} />
+        <Route path="dashboard/nam" element={<div>Trang của Nam</div>} /> */}
 
         {/* Các trang này sẽ được render vào <Outlet /> của Layout */}
         {/* <Route path="dashboard" element={<DashboardPage />} /> */}

@@ -1,90 +1,175 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
-  FaTachometerAlt,
-  FaCog,
   FaChartBar,
-  FaRobot,
+  FaChevronLeft,
+  FaChevronRight,
+  FaCog,
   FaList,
   FaQuestionCircle,
+  FaRobot,
   FaSignOutAlt,
-  FaChevronLeft,
-} from "react-icons/fa"; // Import các icon bạn cần
+  FaTachometerAlt,
+} from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
-// 1. Tạo một component Link con để tái sử dụng
-const SidebarLink = ({ to, icon, label }) => {
-  // Hàm này của NavLink sẽ trả về class, tùy thuộc vào link có active hay không
-  const navLinkClass = ({ isActive }) =>
-    `flex flex-col items-center justify-center p-4 rounded-lg transition-colors ${
-      isActive
-        ? "bg-slate-700 text-white" // Style khi link đang active
-        : "text-blue-300 hover:bg-blue-800 hover:text-white" // Style mặc định
-    }`;
+/**
+ * Component Link con (Đã được viết lại)
+ * - Nhận `isActive` từ prop, thay vì tự tính
+ * - Dùng <button> thay vì <NavLink>
+ * - Gửi sự kiện `onHover` và `onClick`
+ */
+const SidebarLink = ({ to, icon, label, isExpanded, isActive, onHover }) => {
+  const navigate = useNavigate(); // Hook để điều hướng
+
+  // 1. Xác định 'key' của menu (ví dụ: '/dashboard/main' -> 'dashboard')
+  const menuKey = to.split("/")[1];
+
+  // 2. Xác định class active/inactive
+  const activeClass = isActive
+    ? "bg-sidebar-active text-sidebar-text-active font-bold" // Style active
+    : "text-sidebar-text hover:bg-sidebar-hover hover:font-bold"; // Style mặc định
+
+  // 3. Class chung
+  const linkClass = `flex cursor-pointer items-center p-3 rounded-lg transition-all duration-200 w-full ${
+    isExpanded ? "space-x-4" : "justify-center"
+  } ${activeClass}`;
 
   return (
     <li>
-      <NavLink to={to} className={navLinkClass}>
-        {icon}
-        <span className="text-xs font-medium mt-1.5 uppercase tracking-wider">
+      <button
+        className={linkClass}
+        onMouseEnter={() => onHover(menuKey)} // 4. Gửi sự kiện hover
+        onClick={() => navigate(to)} // 5. Điều hướng khi click
+      >
+        <div className="flex-shrink-0 w-6 flex justify-center">{icon}</div>
+        <span
+          className={`overflow-hidden transition-all duration-200 ${
+            isExpanded ? "max-w-xs opacity-100" : "max-w-0 opacity-0"
+          }`}
+        >
           {label}
         </span>
-      </NavLink>
+      </button>
     </li>
   );
 };
 
-// 2. Component Sidebar chính
-const Sidebar = () => {
+/**
+ * Component Sidebar chính (Đã cập nhật)
+ * - Nhận `onHover` và `activeGroup` từ Layout
+ */
+const Sidebar = ({ onHover, activeGroup }) => {
+  const { t } = useTranslation();
+  // State này vẫn quản lý việc thu gọn/mở rộng của Sidebar chính
+  const [isExpanded, setIsExpanded] = useState(true);
+
+  // 6. CẬP NHẬT `to` paths: Phải trỏ đến trang con mặc định
+  const mainLinks = [
+    {
+      to: "/dashboard/list",
+      label: t("sidebar.dashboard.title"),
+      icon: <FaTachometerAlt size={20} />,
+    },
+    {
+      to: "/setup/schedule",
+      label: t("sidebar.setup.title"),
+      icon: <FaCog size={20} />,
+    },
+    // (Cập nhật các link khác nếu chúng có sub-menu)
+    {
+      to: "/monitoring",
+      label: t("sidebar.monitoring.title"),
+      icon: <FaChartBar size={20} />,
+    },
+    {
+      to: "/ai-list",
+      label: t("sidebar.aiList.title"),
+      icon: <FaRobot size={20} />,
+    },
+    {
+      to: "/system",
+      label: t("sidebar.system.title"),
+      icon: <FaList size={20} />,
+    },
+  ];
+
+  const bottomLinks = [
+    {
+      to: "/help",
+      label: t("sidebar.help"),
+      icon: <FaQuestionCircle size={20} />,
+    },
+    {
+      to: "/logout",
+      label: t("sidebar.logout"),
+      icon: <FaSignOutAlt size={20} />,
+    },
+  ];
+
   return (
-    // Sidebar container: w-24 (chiều rộng 24 * 0.25rem = 6rem)
-    <aside className="w-24 bg-blue-900 text-white flex flex-col flex-shrink-0">
-      {/* Nút thu gọn (như trong ảnh) */}
-      <div className="flex items-center justify-center h-16 border-b border-blue-800">
-        <button className="p-2 rounded-md text-blue-300 hover:bg-blue-800 hover:text-white">
-          <FaChevronLeft size={18} />
+    // Container chính:
+    // **Lưu ý: Không có onMouseLeave ở đây** (nó đã được chuyển ra wrapper trong Layout.jsx)
+    <aside
+      className={`flex flex-col flex-shrink-0 bg-sidebar-bg text-white transition-all duration-300 ease-in-out
+      ${isExpanded ? "w-64" : "w-20"}`}
+    >
+      {/* Nút Toggle (thu/mở) */}
+      <div
+        className={`flex items-center border-b border-sidebar-border transition-all duration-300 ${
+          isExpanded ? "justify-end" : "justify-center"
+        } h-16`}
+      >
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="p-2 m-2 rounded-md text-sidebar-text hover:bg-sidebar-hover"
+          aria-label={t("sidebar.toggle")}
+        >
+          {isExpanded ? (
+            <FaChevronLeft size={18} />
+          ) : (
+            <FaChevronRight size={18} />
+          )}
         </button>
       </div>
 
-      {/* 3. Danh sách link chính (flex-1 để đẩy các link dưới cùng xuống) */}
-      <nav className="flex-1 mt-4">
-        <ul className="space-y-2 px-2">
-          <SidebarLink
-            to="/dashboard"
-            icon={<FaTachometerAlt size={22} />}
-            label="Dashboard"
-          />
-          <SidebarLink to="/setup" icon={<FaCog size={22} />} label="Setup" />
-          <SidebarLink
-            to="/monitoring"
-            icon={<FaChartBar size={22} />}
-            label="Monitoring"
-          />
-          <SidebarLink
-            to="/ai-list"
-            icon={<FaRobot size={22} />}
-            label="AI List"
-          />
-          <SidebarLink
-            to="/system"
-            icon={<FaList size={22} />}
-            label="System"
-          />
+      {/* Danh sách link chính */}
+      <nav className="flex-1 mt-4 px-2">
+        <ul className="space-y-2">
+          {mainLinks.map((link) => {
+            const menuKey = link.to.split("/")[1]; // Lấy key (ví dụ: 'dashboard')
+            return (
+              <SidebarLink
+                key={link.to}
+                to={link.to}
+                icon={link.icon}
+                label={link.label}
+                isExpanded={isExpanded}
+                onHover={onHover} // 8. Truyền onHover xuống
+                isActive={activeGroup === menuKey} // 9. Quyết định active
+              />
+            );
+          })}
         </ul>
       </nav>
 
-      {/* 4. Các link dưới cùng (Help, Logout) */}
-      <div className="mb-4">
-        <ul className="space-y-2 px-2">
-          <SidebarLink
-            to="/help"
-            icon={<FaQuestionCircle size={22} />}
-            label="Help"
-          />
-          <SidebarLink
-            to="/logout"
-            icon={<FaSignOutAlt size={22} />}
-            label="Logout"
-          />
+      {/* Danh sách link dưới cùng */}
+      <div className="mb-4 px-2">
+        <ul className="space-y-2">
+          {bottomLinks.map((link) => {
+            const menuKey = link.to.split("/")[1];
+            return (
+              <SidebarLink
+                key={link.to}
+                to={link.to}
+                icon={link.icon}
+                label={link.label}
+                isExpanded={isExpanded}
+                onHover={onHover} // (Sẽ gọi onHover(null) nếu key không có trong config)
+                isActive={activeGroup === menuKey}
+              />
+            );
+          })}
         </ul>
       </div>
     </aside>

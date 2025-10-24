@@ -1,0 +1,39 @@
+{
+  "header": {
+    "welcome": "Chào mừng đến với website của tôi",
+    "hello": "Xin chào",
+    "toggleDarkMode": "Chuyển đổi chế độ tối",
+    "toggleLightMode": "Chuyển đổi chế độ sáng",
+    "language": "Ngôn ngữ",
+    "startStopMission": "Nhiệm vụ bắt đầu/dừng",
+    "roleText": "Vai trò",
+    "joyStick": "Joystick",
+    "low": "Thấp",
+    "voltage": "Điện áp",
+    "current": "Dòng điện",
+    "power": "Công suất",
+    "teamperatureNotAvailable": "Không có dữ liệu nhiệt độ"
+  },
+  "sidebar": {
+    "dashboard": "Bảng điều khiển",
+    "setup": "Cài đặt",
+    "monitoring": "Giám sát",
+    "aiList": "Danh sách AI",
+    "system": "Hệ thống",
+    "help": "Trợ giúp",
+    "logout": "Đăng xuất"
+  },
+  "dashboard": {
+    "links": {
+      "dashboard": "Bảng điều khiển",
+      "test": "Thử nghiệm",
+      "nam": "Nam"
+    }
+  },
+  "setup": {
+    "links": {
+      "schedule": "Lập lịch",
+      "test": "Thử nghiệm"
+    }
+  }
+}

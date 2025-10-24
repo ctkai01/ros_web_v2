@@ -1,0 +1,71 @@
+/* PauseContinueDialog Styles */
+.pause-continue-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.pause-continue-dialog {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.pause-continue-dialog-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.pause-continue-dialog-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.pause-continue-dialog-content {
+  padding: 24px;
+}
+
+.pause-continue-dialog-content p {
+  margin: 0;
+  line-height: 1.6;
+  color: #666;
+  font-size: 14px;
+}
+
+.pause-continue-dialog-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px 24px;
+  border-top: 1px solid #e0e0e0;
+  background: #f8f9fa;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .pause-continue-dialog {
+    width: 95%;
+    margin: 20px;
+  }
+  
+  .pause-continue-dialog-header,
+  .pause-continue-dialog-content,
+  .pause-continue-dialog-actions {
+    padding: 16px;
+  }
+  
+
+} 

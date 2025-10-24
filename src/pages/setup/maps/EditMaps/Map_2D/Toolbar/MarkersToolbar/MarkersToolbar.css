@@ -1,0 +1,57 @@
+/* Markers Toolbar Styles */
+.markers-tools {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    align-items: center;
+    margin-left: 8px;
+    background: none;
+    box-shadow: none;
+    z-index: 1;
+    min-width: auto;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 8px;
+}
+
+.markers-tools .cursor-icon {
+    background-image: url('../../../../../../../../public/assets/icons/cursor.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Marker specific icons */
+.markers-tools .marker-icon {
+    background-image: url('../../../../../../../../public/assets/icons/add-location.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.markers-tools .marker-edit-icon {
+    background-image: url('../../../../../../../../public/assets/icons/edit-location.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.markers-tools .delete-icon {
+    position: relative;
+}
+.markers-tools .delete-icon::before {
+    font-size: 16px;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .markers-tools {
+        padding: 6px;
+        flex-wrap: wrap;
+    }
+    .markers-tools .tool-button {
+        min-width: 35px;
+        min-height: 35px;
+        padding: 6px;
+    }
+}

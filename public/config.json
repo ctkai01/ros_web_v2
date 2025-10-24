@@ -1,0 +1,44 @@
+{
+  "domain": "localhost",
+  "server": {
+    "port": 3000,
+    "host": "0.0.0.0"
+  },
+  "client": {
+    "port": 5173,
+    "host": "0.0.0.0"
+  },
+  "websocket": {
+    "port": 8081,
+    "host": "0.0.0.0"
+  },
+  "ros": {
+    "port": 8080,
+    "host": "0.0.0.0"
+  },
+  "cors": {
+    "allowedOrigins": [
+      "http://localhost:8080",
+      "http://localhost:3000",
+      "https://localhost:8080",
+      "https://localhost:3000",
+      "http://127.0.0.1:8080",
+      "http://127.0.0.1:3000",
+      "https://127.0.0.1:8080",
+      "https://127.0.0.1:3000",
+      "http://192.168.50.156:8080",
+      "http://192.168.50.156:3000",
+      "https://192.168.50.156:8080",
+      "https://192.168.50.156:3000",
+      "http://ntu-amr-1.local:8080",
+      "http://ntu-amr-1.local:3000",
+      "https://ntu-amr-1.local:8080",
+      "https://ntu-amr-1.local:3000",
+      "http://192.168.127.10:8080",
+      "http://192.168.127.10:3000",
+      "https://192.168.127.10:8080",
+      "https://192.168.127.10:3000",
+      "http://localhost:5173"
+    ]
+  }
+}

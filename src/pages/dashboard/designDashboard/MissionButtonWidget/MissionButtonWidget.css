@@ -1,0 +1,305 @@
+.mission-button-widget {
+  position: relative;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 200px;
+  min-height: 100px;
+  box-sizing: border-box;
+  justify-self: stretch;
+  align-self: stretch;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  resize: none;
+}
+
+/* Design mode styles */
+.mission-button-widget.design-mode {
+  background-color: #ffffff !important; /* Force white background in design mode */
+  cursor: grab;
+}
+
+
+.mission-button-widget.design-mode .widget-title {
+  color: #6c757d;
+}
+
+
+.mission-button-widget.design-mode .widget-actions {
+  display: none;
+}
+
+.mission-button-widget.design-mode .execution-status,
+.mission-button-widget.design-mode .last-executed,
+.mission-button-widget.design-mode .execution-count {
+  display: none;
+}
+
+/* Display mode styles */
+.mission-button-widget.display-mode {
+  background-color: #8BC34A !important;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.mission-button-widget.display-mode:hover {
+  background-color: #7CB342 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.mission-button-widget.display-mode:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.mission-button-widget.display-mode .widget-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 8px;
+  padding: 16px;
+}
+
+.mission-button-widget.display-mode .target-icon {
+  width: 64px;
+  height: 64px;
+  background-image: url('../../../../../public/assets/icons/target-white.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.mission-button-widget.display-mode .widget-name {
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.mission-button-widget:hover {
+  border-color: #8BC34A;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.mission-button-widget.active {
+  border-color: #8BC34A;
+  background-color: rgba(139, 195, 74, 0.05);
+}
+
+.mission-button-widget.executing {
+  border-color: #FF9800;
+  background-color: rgba(255, 152, 0, 0.1);
+  animation: pulse 2s infinite;
+}
+
+.mission-button-widget.display-mode.executing {
+  background-color: #FF9800 !important;
+  animation: pulse 2s infinite;
+}
+
+.mission-button-widget.display-mode.pending {
+  background-color: #ffc107 !important;
+  cursor: wait;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 152, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 152, 0, 0);
+  }
+}
+
+/* Executing indicator styles */
+.executing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+.mission-button-widget .widget-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 4px 0;
+}
+
+.execution-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 5px 0;
+  font-size: 11px;
+  color: #FF9800;
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #FF9800;
+  animation: blink 1s infinite;
+}
+
+.status-indicator.executing {
+  background-color: #FF9800;
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0.3;
+  }
+}
+
+.status-text {
+  font-weight: 500;
+}
+
+.last-executed {
+  font-size: 10px;
+  color: #999;
+  margin: 2px 0;
+}
+
+.execution-count {
+  font-size: 10px;
+  color: #666;
+  margin: 2px 0;
+}
+
+.widget-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.mission-start-btn {
+  background-color: #8BC34A;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mission-start-btn:hover:not(:disabled) {
+  background-color: #7CB342;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.mission-start-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.mission-start-btn.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.mission-stop-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mission-stop-btn:hover {
+  background-color: #d32f2f;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .mission-button-widget {
+    min-width: 150px;
+    min-height: 80px;
+    padding: 10px;
+  }
+  
+  .widget-title {
+    font-size: 14px;
+  }
+  
+   
+  .mission-start-btn,
+  .mission-stop-btn {
+    font-size: 11px;
+    padding: 6px 10px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .mission-button-widget:not(.design-mode):not(.display-mode) {
+    background: #2d3748;
+    border-color: #4a5568;
+    color: #e2e8f0;
+  }
+  
+
+  .widget-title {
+    color: #e2e8f0;
+  }
+  
+  
+  .last-executed,
+  .execution-count {
+    color: #718096;
+  }
+} 

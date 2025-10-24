@@ -1,0 +1,703 @@
+/* Mission Queue Widget Styles */
+.mission-queue-widget {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #f5f5f5;
+  border-radius: 8px;
+  overflow: hidden;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+}
+
+/* Allow custom sizing when applied via inline styles */
+.mission-queue-widget[style*="width"] {
+  width: auto !important;
+}
+
+.mission-queue-widget[style*="height"] {
+  height: auto !important;
+}
+
+
+
+.mission-queue-widget .widget-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 4px 0;
+}
+
+
+/* Queue Stats */
+.queue-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.stat-item {
+  font-size: 10px;
+  color: #6c757d;
+  background: #e9ecef;
+  padding: 2px 6px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+.stat-item.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.stat-item.executing {
+  background: #cce5ff;
+  color: #0066cc;
+}
+
+/* Queue Controls */
+.queue-controls {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  flex-shrink: 0;
+}
+
+.control-btn {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  min-width: 36px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control-btn:hover:not(:disabled) {
+  background: #e9ecef;
+  border-color: #adb5bd;
+}
+
+.control-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.control-btn.start {
+  background: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
+}
+
+.control-btn.start:hover:not(:disabled) {
+  background: #c3e6cb;
+}
+
+.control-btn.stop {
+  background: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}
+
+.control-btn.stop:hover:not(:disabled) {
+  background: #f5c6cb;
+}
+
+.control-btn.clear {
+  background: #fff3cd;
+  border-color: #ffeaa7;
+  color: #856404;
+}
+
+.control-btn.clear:hover:not(:disabled) {
+  background: #ffeaa7;
+}
+
+.control-btn.add {
+  background: #cce5ff;
+  border-color: #99d6ff;
+  color: #0066cc;
+}
+
+.control-btn.add:hover:not(:disabled) {
+  background: #99d6ff;
+}
+
+/* Queue Header */
+.queue-header {
+  padding: 5px 5px;
+  background: #f5f5f5;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.refresh-btn {
+  background: #007bff;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 12px;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.refresh-btn:hover {
+  background: #0056b3;
+  transform: scale(1.05);
+}
+
+.refresh-btn:active {
+  transform: scale(0.95);
+}
+
+.refresh-btn:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.refresh-btn:disabled:hover {
+  background: #6c757d;
+  transform: none;
+}
+
+.waiting-status {
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+}
+
+.waiting-status.error {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+/* Queue Content */
+.queue-content {
+  flex: 1;
+  padding: 5px 10px;
+  background: #f5f5f5;
+  box-sizing: border-box;
+  overflow-y: auto;
+  min-height: 0; /* Allow flex item to shrink */
+}
+
+/* Mission Item */
+.mission-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 10px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.mission-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.mission-icon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mission-icon.after{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  z-index: 1000;
+}
+
+.mission-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.mission-name {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.mission-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.status-btn.pending {
+  background: #ffc107;
+  color: #333;
+}
+
+.status-btn.pending:hover {
+  background: #e0a800;
+}
+
+.status-btn.running {
+  background: #4CAF50;
+  color: white;
+}
+
+.status-btn.running:hover {
+  background: #45a049;
+}
+
+.status-btn.paused {
+  background: #ff9800;
+  color: white;
+}
+
+.status-btn.paused:hover {
+  background: #f57c00;
+}
+
+.status-btn.completed {
+  background: #28a745;
+  color: white;
+}
+
+.status-btn.completed:hover {
+  background: #218838;
+}
+
+.status-btn.failed {
+  background: #dc3545;
+  color: white;
+}
+
+.status-btn.failed:hover {
+  background: #c82333;
+}
+
+.status-btn.cancelled {
+  background: #6c757d;
+  color: white;
+}
+
+.status-btn.cancelled:hover {
+  background: #5a6268;
+}
+
+.cancel-btn {
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 4px;
+  background: #f44336;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.cancel-btn:hover:not(:disabled) {
+  background: #d32f2f;
+}
+
+.cancel-btn:disabled {
+  background: #ccc;
+  color: #999;
+  cursor: not-allowed;
+}
+
+/* Empty Queue State - Legacy (hidden in new display mode) */
+.empty-queue {
+  display: none; /* Hidden in new display mode */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  color: #6c757d;
+  gap: 8px;
+}
+
+.empty-icon {
+  font-size: 32px;
+  opacity: 0.5;
+}
+
+.empty-text {
+  font-size: 14px;
+}
+
+/* Queue Items - Legacy (hidden in new display mode) */
+.queue-item {
+  display: none; /* Hidden in new display mode */
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+  background: #f8f9fa;
+  position: relative;
+}
+
+.queue-item:hover {
+  background: #e9ecef;
+}
+
+.queue-item.current {
+  background: #e3f2fd;
+  border-left-color: #2196f3;
+  box-shadow: 0 2px 4px rgba(33, 150, 243, 0.2);
+}
+
+.queue-item.pending {
+  border-left-color: #ffc107;
+}
+
+.queue-item.executing {
+  border-left-color: #007bff;
+  background: #e3f2fd;
+  animation: pulse-executing 2s infinite;
+}
+
+.queue-item.completed {
+  border-left-color: #28a745;
+  background: #d4edda;
+  opacity: 0.8;
+}
+
+.queue-item.failed {
+  border-left-color: #dc3545;
+  background: #f8d7da;
+}
+
+.queue-item.cancelled {
+  border-left-color: #6c757d;
+  background: #f8f9fa;
+  opacity: 0.6;
+}
+
+@keyframes pulse-executing {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+.mission-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mission-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.mission-name {
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mission-description {
+  font-size: 10px;
+  color: #6c757d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background: #e9ecef;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 2px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #007bff;
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+
+.priority-icon {
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+/* Mission Actions */
+.mission-actions {
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.queue-item:hover .mission-actions {
+  opacity: 1;
+}
+
+.action-btn {
+  background: transparent;
+  border: none;
+  padding: 2px 4px;
+  cursor: pointer;
+  font-size: 10px;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+  min-width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.action-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.action-btn.up:hover:not(:disabled) {
+  background: rgba(40, 167, 69, 0.2);
+}
+
+.action-btn.down:hover:not(:disabled) {
+  background: rgba(255, 193, 7, 0.2);
+}
+
+.action-btn.remove:hover:not(:disabled) {
+  background: rgba(220, 53, 69, 0.2);
+}
+
+/* Design Mode Styles */
+.mission-queue-widget.design-mode {
+  border: 2px dashed #dee2e6;
+  background: #f8f9fa;
+}
+
+.mission-queue-widget.design-mode .widget-title {
+  color: #6c757d;
+}
+
+.mission-queue-widget.design-mode .queue-content {
+  display: none;
+}
+
+.queue-item.sample {
+  opacity: 0.7;
+  background: #e9ecef;
+  border-left-color: #adb5bd;
+}
+
+.queue-item.sample .mission-icon {
+  opacity: 0.5;
+}
+
+.queue-item.sample .mission-name {
+  color: #6c757d;
+  font-style: italic;
+}
+
+.queue-item.sample.executing {
+  background: #d1ecf1;
+  border-left-color: #bee5eb;
+  animation: none;
+}
+
+/* Display Mode Styles */
+.mission-queue-widget.display-mode {
+  border: 1px solid #ddd;
+  background: #f5f5f5;
+}
+
+.mission-queue-widget.display-mode:hover {
+  border-color: #bbb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.mission-queue-widget.display-mode .queue-content {
+  background: #f5f5f5;
+}
+
+.mission-queue-widget.display-mode .queue-header {
+  background: #f5f5f5;
+  justify-content: center;
+}
+/* Thêm vào file MissionQueueWidget.css */
+
+.mission-item.dragging {
+  /* Nâng item lên khỏi mặt phẳng và đổ bóng */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: rotate(2deg); /* Hơi nghiêng item để tạo cảm giác đang được nhấc lên */
+
+  /* Thay đổi màu nền để làm nổi bật item đang được kéo */
+  background-color: #e9ecef;
+
+  /* Giữ lại các thuộc tính khác để hiển thị đúng */
+  display: flex;
+  align-items: center;
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+
+  
+  .queue-stats {
+    align-items: center;
+    flex-direction: row;
+    gap: 4px;
+  }
+  
+  .queue-controls {
+    padding: 6px 12px;
+  }
+  
+  .control-btn {
+    min-width: 32px;
+    height: 28px;
+    font-size: 12px;
+  }
+  
+  .queue-item {
+    padding: 6px 8px;
+    flex-wrap: wrap;
+  }
+  
+  .mission-actions {
+    opacity: 1;
+    margin-top: 4px;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .mission-details {
+    flex: none;
+    width: 100%;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .mission-queue-widget {
+    background: #2c3e50;
+    color: #ecf0f1;
+  }
+  
+  
+  .mission-queue-widget .widget-title {
+    color: #ecf0f1;
+  }
+  
+  .queue-content {
+    background: #2c3e50;
+  }
+  
+  .queue-controls {
+    background: #34495e;
+    border-bottom-color: #4a5f7a;
+  }
+  
+  .queue-item {
+    background: #34495e;
+    color: #ecf0f1;
+  }
+  
+  .queue-item:hover {
+    background: #4a5f7a;
+  }
+  
+  .mission-name {
+    color: #ecf0f1;
+  }
+  
+  .stat-item {
+    background: #34495e;
+    color: #ecf0f1;
+  }
+  
+  .control-btn {
+    background: #34495e;
+    color: #ecf0f1;
+    border-color: #4a5f7a;
+  }
+  
+  .control-btn:hover:not(:disabled) {
+    background: #4a5f7a;
+  }
+}
+
+/* Scrollbar Styling */
+.queue-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.queue-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.queue-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.queue-content::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+} 

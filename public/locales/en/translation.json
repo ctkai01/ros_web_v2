@@ -1,0 +1,82 @@
+{
+  "header": {
+    "welcome": "Welcome to my website",
+    "hello": "Hello",
+    "toggleDarkMode": "Toogle dark mode",
+    "toggleLightMode": "Toogle light mode",
+    "language": "Language",
+    "startStopMission": "Mission start/stop",
+    "roleText": "Role",
+    "joyStick": "Joystick",
+    "low": "Low",
+    "voltage": "Voltage",
+    "current": "Current",
+    "power": "Power",
+    "teamperatureNotAvailable": "Temperature data not available"
+  },
+  "sidebar": {
+    "dashboard": {
+      "title": "Dashboard",
+      "items": {
+        "dashboard": "Dashboard",
+        "test": "Testss",
+        "nam": "Nam"
+      }
+    },
+    "setup": {
+      "title": "Setup",
+      "items": {
+        "schedule": "Schedule",
+        "test": "Test"
+      }
+    },
+    "monitoring": {
+      "title": "Monitoring",
+      "items": {
+        "test": "Test",
+        "nam": "Nam"
+      }
+    },
+    "aiList": {
+      "title": "AI List",
+      "items": {
+        "test": "Test",
+        "nam": "Nam"
+      }
+    },
+    "system": {
+      "title": "System",
+      "items": {
+        "test": "Test",
+        "nam": "Nam"
+      }
+    },
+    "help": "Help",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Create and edit dashboards for the robot.",
+    "create": "Create Dashboard",
+    "clearFilters": "Clear filters",
+    "filter": "Filter",
+    "filterPlaceholder": "Write name to filter by...",
+    "itemsFound": "item(s) found",
+    "table": {
+      "name": "Name",
+      "createdBy": "Created by",
+      "functions": "Functions"
+    },
+    "createPage": {
+      "title": "Create New Dashboard",
+      "subtitle": "Enter dashboard details below",
+      "goBack": "Go Back",
+      "formLabel": "Dashboard Name:",
+      "createButton": "Create Dashboard",
+      "cancelButton": "Cancel",
+      "validation": {
+        "nameRequired": "Dashboard Name is required"
+      }
+    }
+  }
+}

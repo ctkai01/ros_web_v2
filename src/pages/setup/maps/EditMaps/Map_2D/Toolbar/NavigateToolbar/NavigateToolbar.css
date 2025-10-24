@@ -1,0 +1,106 @@
+/* Navigate Toolbar Styles */
+.navigate-tools {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    align-items: center;
+    margin-left: 8px;
+    background: none;
+    box-shadow: none;
+    z-index: 1;
+    min-width: auto;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 8px;
+}
+
+
+
+.navigate-tools .tool-button:hover .tool-icon.pose-estimate-icon {
+    opacity: 0.7;
+}
+
+.navigate-tools .tool-button:hover .tool-icon.nav-goal-icon {
+    opacity: 0.7;
+}
+
+.navigate-tools .tool-button.active .tool-icon.pose-estimate-icon {
+    opacity: 1;
+}
+
+.navigate-tools .tool-button.active .tool-icon.nav-goal-icon {
+    opacity: 1;
+}
+
+.navigate-tools .delete-icon {
+    position: relative;
+}
+
+/* Alternative selectors for debugging */
+.navigate-tools .pose-estimate-icon {
+    background-image: url('../../../../../../../../public/assets/icons/2d-pose-estimate.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.navigate-tools .nav-goal-icon {
+    background-image: url('../../../../../../../../public/assets/icons/2d-nav-goal.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.navigate-tools .move-icon {
+    background-image: url('../../../../../../../../public/assets/icons/move.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.navigate-tools .rotate-icon {
+    background-image: url('../../../../../../../../public/assets/icons/reset-view.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.navigate-tools .cancel-changes-icon {
+    background-image: url('../../../../../../../../public/assets/icons/cancel.png');
+}
+
+.navigate-tools .apply-changes-icon {
+    background-image: url('../../../../../../../../public/assets/icons/check.png');
+}
+
+/* Action button styles */
+.navigate-tools .tool-button[id*="cancel"] {
+    background-color: rgba(220, 53, 69, 0.1);
+    border-color: rgba(220, 53, 69, 0.3);
+}
+
+.navigate-tools .tool-button[id*="cancel"]:hover {
+    background-color: rgba(220, 53, 69, 0.2);
+}
+
+.navigate-tools .tool-button[id*="apply"] {
+    background-color: rgba(40, 167, 69, 0.1);
+    border-color: rgba(40, 167, 69, 0.3);
+}
+
+.navigate-tools .tool-button[id*="apply"]:hover {
+    background-color: rgba(40, 167, 69, 0.2);
+}
+
+@media (max-width: 768px) {
+    .navigate-tools {
+        padding: 6px;
+        flex-wrap: wrap;
+    }
+    .navigate-tools .tool-button {
+        min-width: 35px;
+        min-height: 35px;
+        padding: 6px;
+    }
+
+} 

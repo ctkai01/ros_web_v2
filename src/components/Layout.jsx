@@ -1,31 +1,45 @@
-import { Outlet } from "react-router-dom"; // 1. Import Outlet
-import FlowbiteHeader from "./FlowbiteHeader"; // 2. Import Header
-import Sidebar from "./Sidebar"; // 3. Import Sidebar
+import { useState } from "react";
+import { Outlet, useLocation } from "react-router-dom";
+import MainHeader from "./FlowbiteHeader";
+import Sidebar from "./Sidebar";
+import SubMenu from "./SubMenu";
 
 const Layout = () => {
+  const [hoveredMenu, setHoveredMenu] = useState(null);
+  const location = useLocation();
+  const activeGroup = location.pathname.split("/")[1] || null;
+
+  // Logic của bạn: Chỉ hiển thị menu khi hover
+  const menuToShow = hoveredMenu;
+
   return (
-    // Container chính: flex-col, full chiều cao màn hình
-    <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-900">
-      {/* Header: Luôn ở trên cùng */}
-      <FlowbiteHeader />
+    <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-800">
+      <MainHeader />
 
-      {/* Container cho Sidebar và Content:
-        - flex-1: Lấp đầy không gian còn lại (dưới Header)
-        - overflow-hidden: Ngăn cuộn ở cấp này
-      */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar: Cố định bên trái */}
-        <Sidebar />
+        {/* 1. TẠO MỘT VỎ BỌC (WRAPPER) CHO CẢ 2 MENU */}
+        <div
+          className="flex flex-shrink-0" // flex-shrink-0 để nó không bị co lại
+          onMouseLeave={() => setHoveredMenu(null)} // 2. ĐẶT onMouseLeave TẠI ĐÂY
+        >
+          {/* === CỘT 1: SIDEBAR CHÍNH === */}
+          <Sidebar
+            onHover={setHoveredMenu}
+            activeGroup={activeGroup}
+            // (Chúng ta sẽ xóa onMouseLeave bên trong Sidebar ở bước 2)
+          />
 
-        {/* Vùng Content chính:
-          - flex-1: Lấp đầy không gian còn lại (bên phải Sidebar)
-          - overflow-y-auto: Chỉ cho phép vùng NÀY cuộn khi nội dung dài
-          - p-6: Thêm padding cho vùng nội dung
-        */}
-        <main className="flex-1 overflow-y-auto p-6">
-          {/* Outlet: Đây là nơi React Router sẽ render các trang con
-              (như Dashboard.jsx, SetupLayout.jsx,...)
-          */}
+          {/* === CỘT 2: SUB-MENU ĐỘNG === */}
+          {/* SubMenu bây giờ nằm "an toàn" bên trong vỏ bọc */}
+          <SubMenu menuKey={menuToShow} />
+        </div>
+
+        {/* === CỘT 3: NỘI DUNG CHÍNH === */}
+        <main
+          className="flex-1 overflow-y-auto p-6"
+          // Giữ sự kiện này để reset hover khi đi vào main
+          onMouseEnter={() => setHoveredMenu(null)}
+        >
           <Outlet />
         </main>
       </div>

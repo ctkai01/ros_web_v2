@@ -7,4 +7,24 @@
   --color-primary: #3b82f6;
   --color-primary-dark: #0d0d0d;
   --color-secondary: #00579a;
+  --color-third: #3498db;
+
+  --color-sidebar-bg: #00579a; /* Nền chính (từ --color-secondary) */
+  --color-sidebar-text: #dbeafe; /* Chữ (màu blue-100) */
+  --color-sidebar-text-active: #ffffff; /* Chữ khi active (màu trắng) */
+  --color-sidebar-hover: #0066b3; /* Nền khi hover (đậm hơn 1 chút) */
+  --color-sidebar-active: #0077cc; /* Nền khi active (sáng nhất) */
+  --color-sidebar-border: #004c8a;
+
+  /*
+   * ==========================================
+   * 🎨 MÀU CHO SUB-MENU (Menu con)
+   * ==========================================
+   */
+  --color-submenu-bg: #3498db; /* Nền chính (màu bạn chọn) */
+  --color-submenu-text: #ecf0f1; /* Chữ (màu trắng mây) */
+  --color-submenu-text-active: #ffffff; /* Chữ khi active (trắng tinh) */
+  --color-submenu-hover: #2980b9; /* Nền khi hover (xanh đậm hơn) */
+  --color-submenu-active: rgb(28, 87, 147); /* Nền khi active (xanh đen) */
+  --color-submenu-border: #2980b9; /* Viền (xanh đậm hơn) */
 }

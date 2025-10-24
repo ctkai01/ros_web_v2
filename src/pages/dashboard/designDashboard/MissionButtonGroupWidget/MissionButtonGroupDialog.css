@@ -1,0 +1,109 @@
+.mission-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.mission-dialog {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.mission-dialog-header {
+  background: #f8f9fa;
+  padding: 20px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.mission-dialog-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.mission-dialog-content {
+  padding: 20px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.mission-dialog-content p {
+  margin: 0 0 20px 0;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.mission-field {
+  margin-bottom: 20px;
+}
+
+.mission-field label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.mission-field select {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e9ecef;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: white;
+  transition: border-color 0.2s;
+}
+
+.mission-field select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.mission-field select:disabled {
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+}
+
+.mission-dialog-actions {
+  padding: 20px;
+  border-top: 1px solid #e9ecef;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .mission-dialog {
+    width: 95%;
+    max-height: 95vh;
+  }
+  
+  .mission-dialog-content {
+    padding: 16px;
+  }
+  
+  .mission-dialog-actions {
+    padding: 16px;
+    flex-direction: column;
+  }
+  
+} 

@@ -1,0 +1,595 @@
+.mission-button-group-widget {
+  position: relative;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 200px;
+  min-height: 100px;
+  box-sizing: border-box;
+  justify-self: stretch;
+  align-self: stretch;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  resize: none;
+}
+
+/* Design mode styles */
+.mission-button-group-widget.design-mode {
+  background-color: #ffffff !important; /* Force white background in design mode */
+  cursor: grab;
+}
+
+.mission-button-group-widget.design-mode .widget-title {
+  color: #6c757d;
+}
+
+.mission-button-group-widget.design-mode .widget-actions {
+  display: none;
+}
+
+.mission-button-group-widget.design-mode .execution-status,
+.mission-button-group-widget.design-mode .last-executed,
+.mission-button-group-widget.design-mode .execution-count {
+  display: none;
+}
+
+/* Display mode styles */
+.mission-button-group-widget.display-mode {
+  background-color: #ffffff !important; /* White background for container */
+  /* padding: 16px; */
+  cursor: pointer;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100%;
+  /* border: 1px solid #e0e0e0; */
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+  transition: all 0.2s ease;
+}
+
+.mission-button-group-widget.display-mode:hover {
+  background-color: #f8f9fa !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.mission-button-group-widget.display-mode:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.mission-button-group-widget.display-mode .widget-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* height: 100%; */
+  min-height: 100%;
+  /* flex: 1; */
+  /* width: 100%; */
+  gap: 8px;
+}
+
+.mission-button-group-widget.display-mode .target-icon {
+  width: 32px;
+  height: 32px;
+  background-image: url('../../../../../public/assets/icons/target-white.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.mission-button-group-widget.display-mode .widget-name {
+  color: #333333; /* Dark text for white background */
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.mission-button-group-widget:hover {
+  border-color: #8BC34A;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.mission-button-group-widget.active {
+  border-color: #8BC34A;
+  background-color: rgba(139, 195, 74, 0.05);
+}
+
+.mission-button-group-widget.executing {
+  border-color: #FF9800;
+  background-color: rgba(255, 152, 0, 0.1);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 152, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 152, 0, 0);
+  }
+}
+
+
+.mission-button-group-widget .widget-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 4px 0;
+}
+
+
+.execution-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 5px 0;
+  font-size: 11px;
+  color: #FF9800;
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #FF9800;
+  animation: blink 1s infinite;
+}
+
+.status-indicator.executing {
+  background-color: #FF9800;
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0.3;
+  }
+}
+
+.status-text {
+  font-weight: 500;
+}
+
+.last-executed {
+  font-size: 10px;
+  color: #999;
+  margin: 2px 0;
+}
+
+.execution-count {
+  font-size: 10px;
+  color: #666;
+  margin: 2px 0;
+}
+
+.widget-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.mission-start-btn {
+  background-color: #8BC34A;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mission-start-btn:hover:not(:disabled) {
+  background-color: #7CB342;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.mission-start-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.mission-start-btn.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.mission-stop-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mission-stop-btn:hover {
+  background-color: #d32f2f;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Mission buttons container */
+.mission-button-group-widget .mission-buttons-container {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 4px;
+  box-sizing: border-box;
+}
+
+/* Grid layout container */
+.mission-button-group-widget .mission-buttons-container[style*="display: grid"] {
+  display: grid !important;
+  grid-auto-flow: row !important;
+  grid-auto-rows: minmax(48px, auto) !important;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
+  align-content: flex-start !important;
+  justify-items: center !important;
+  justify-content: center !important;
+  flex-wrap: unset !important;
+  flex-direction: unset !important;
+  align-items: unset !important;
+  min-height: 100px !important;
+  max-height: 400px !important;
+  height: auto !important;
+  overflow-y: auto !important;
+  padding: 12px 8px 8px 8px !important;
+  width: 100% !important;
+}
+
+/* Custom scrollbar for mission buttons container */
+.mission-button-group-widget .mission-buttons-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.mission-button-group-widget .mission-buttons-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.mission-button-group-widget .mission-buttons-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.mission-button-group-widget .mission-buttons-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+.mission-button-group-widget .layout-horizontal {
+  flex-direction: row;
+}
+
+.mission-button-group-widget .layout-vertical {
+  flex-direction: column;
+}
+
+.mission-button-group-widget .mission-button-item,
+.mission-button-group-widget .mission-button-preview {
+  width: 100%;
+  min-width: 120px;
+  max-width: none;
+}
+
+/* Grid layout support */
+.mission-button-group-widget .mission-buttons-container[style*="display: grid"] .mission-button-item {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  /* height: fit-content !important; */
+  min-height: 48px !important;
+  flex: unset !important;
+  flex-basis: unset !important;
+  flex-grow: unset !important;
+  flex-shrink: unset !important;
+  display: flex !important;
+  align-items: stretch !important;
+}
+
+/* Ensure grid items flow properly */
+.mission-button-group-widget .mission-buttons-container[style*="display: grid"] {
+  grid-template-rows: repeat(auto-fit, minmax(48px, auto));
+  place-items: center;
+  justify-content: center;
+  align-content: flex-start;
+}
+
+/* Responsive adjustments for different container sizes */
+.mission-button-group-widget .mission-buttons-container.layout-horizontal .mission-button-item {
+  width: 100%;
+}
+
+.mission-button-group-widget .mission-buttons-container.layout-vertical .mission-button-item {
+  width: 100%;
+  max-width: none;
+}
+
+.mission-button-group-widget .mission-btn {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #8BC34A;
+  background: #8BC34A; /* Green background by default */
+  color: #ffffff; /* White text */
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Align content to left for icon */
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  min-height: 48px;
+  word-wrap: break-word;
+  white-space: normal;
+  height: 100%; /* Fill the grid cell */
+}
+
+.mission-button-group-widget .mission-btn:hover {
+  background: #7CB342; /* Darker green on hover */
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(139, 195, 74, 0.3);
+}
+
+.mission-button-group-widget .mission-btn:active {
+  transform: translateY(0);
+}
+
+.mission-button-group-widget .mission-btn.executing {
+  background: #7CB342; /* Darker green when executing */
+  color: white;
+  border-color: #7CB342;
+}
+
+.mission-button-group-widget .mission-btn.executing:hover {
+  background: #6A9F3A; /* Even darker green when executing and hovering */
+  border-color: #6A9F3A;
+}
+
+.mission-button-group-widget .mission-btn.pending {
+  background: #ffc107 !important; /* Yellow when pending */
+  color: #333 !important;
+  border-color: #ffc107 !important;
+  cursor: wait !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.mission-button-group-widget .mission-btn.pending:hover {
+  background: #e0a800 !important; /* Darker yellow when pending and hovering */
+  border-color: #e0a800 !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.mission-button-group-widget .mission-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.mission-button-group-widget .mission-btn.preview {
+  background: #f8f9fa;
+  border-color: #dee2e6;
+  color: #6c757d;
+  cursor: default;
+}
+
+.mission-button-group-widget .mission-btn.preview:hover {
+  background: #f8f9fa;
+  color: #6c757d;
+  transform: none;
+  box-shadow: none;
+}
+
+.mission-button-group-widget .button-text {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Target icon inside mission buttons */
+.mission-button-group-widget .mission-btn .target-icon {
+  width: 16px;
+  height: 16px;
+  background-image: url('../../../../../public/assets/icons/target-white.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  flex-shrink: 0; /* Prevent icon from shrinking */
+}
+
+.mission-button-group-widget .executing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #333;
+  margin-top: 4px;
+}
+
+.mission-button-group-widget .executing-indicator i {
+  font-size: 12px;
+  animation: spin 1s linear infinite;
+}
+
+.mission-button-group-widget .executing-indicator span {
+  font-weight: 500;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Button sizes */
+.mission-button-group-widget .btn-small {
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.mission-button-group-widget .btn-medium {
+  /* padding: 12px 16px; */
+  font-size: 14px;
+}
+
+.mission-button-group-widget .btn-large {
+  padding: 16px 20px;
+  font-size: 16px;
+}
+
+.mission-button-group-widget .no-missions-message {
+  text-align: center;
+  color: #6c757d;
+  padding: 20px;
+}
+
+.mission-button-group-widget .no-missions-message p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.mission-button-group-widget .no-settings-message {
+  text-align: center;
+  color: #6c757d;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.mission-button-group-widget .no-settings-message p {
+  margin: 4px 0;
+  font-size: 14px;
+  font-style: italic;
+  color: #999;
+}
+
+.mission-button-group-widget .loading-message {
+  text-align: center;
+  color: #6c757d;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.mission-button-group-widget .loading-message p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #8BC34A;
+  font-weight: 500;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .mission-button-group-widget {
+    min-width: 150px;
+    min-height: 80px;
+    padding: 10px;
+  }
+  
+  .widget-title {
+    font-size: 14px;
+  }
+  
+  .mission-start-btn,
+  .mission-stop-btn {
+    font-size: 11px;
+    padding: 6px 10px;
+  }
+  
+  .mission-button-group-widget .mission-buttons-container {
+    flex-direction: column;
+  }
+  
+  .mission-button-group-widget .mission-buttons-container[style*="display: grid"] {
+    grid-auto-rows: minmax(40px, auto);
+  }
+  
+  .mission-button-group-widget .mission-button-item,
+  .mission-button-group-widget .mission-button-preview {
+    min-width: auto;
+    width: 100%;
+    max-width: none;
+  }
+  
+  .mission-button-group-widget .btn-large {
+    padding: 14px 18px;
+    font-size: 15px;
+  }
+}
+
+/* For very small containers - keep basic responsive adjustments */
+@media (max-width: 480px) {
+  .mission-button-group-widget {
+    min-width: 120px;
+    min-height: 60px;
+    padding: 8px;
+  }
+  
+  .mission-button-group-widget .mission-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  .mission-button-group-widget .mission-btn .target-icon {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .mission-button-group-widget:not(.design-mode):not(.display-mode) {
+    background: #2d3748;
+    border-color: #4a5568;
+    color: #e2e8f0;
+  }
+  
+  .widget-title {
+    color: #e2e8f0;
+  }
+ 
+  
+  .last-executed,
+  .execution-count {
+    color: #718096;
+  }
+} 
