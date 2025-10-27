@@ -1,106 +1,198 @@
-import { Button, Card, Spinner } from "flowbite-react"; // Import Flowbite
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next"; // Import i18n
+import { Button, Card, ListGroup, ListGroupItem } from "flowbite-react";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import {
+  FaCheckCircle, // Icon cho bản đồ (ví dụ)
+  FaCrosshairs, // Icon cho các nút mission
+  FaExclamationTriangle,
+  FaMapMarkerAlt, // Icon cho TestDock
+  FaPlay, // Icon Success
+  FaTimesCircle,
+} from "react-icons/fa";
+import { TbTargetArrow } from "react-icons/tb";
 import { useNavigate, useParams } from "react-router-dom";
-
-// Import các widget (giữ nguyên)
+// import MissionActionLogWidget from "../../../components/widgets/MissionActionLogWidget";
+// import MissionButtonGroupWidget from "../../../components/widgets/MissionButtonGroupWidget";
 import serverConfig from "../../../config/serverConfig";
-import Widget from "../../../models/Widget";
+import MissionButtonWidget from "../designDashboard/MissionButtonWidget/MissionButtonWidget";
+import MissionButtonGroupWidget from "../designDashboard/MissionButtonGroupWidget";
+import MissionActionLogWidget from "../designDashboard/MissionActionLogWidget/MissionActionLogWidget";
+import PauseContinueWidget from "../designDashboard/PauseContinueWidget/PauseContinueWidget";
+import MissionQueueWidget from "../designDashboard/MissionQueueWidget/MissionQueueWidget";
 import IOStatusWidget from "../designDashboard/IOStatusWidget/IOStatusWidget";
 import JoystickWidget from "../designDashboard/JoystickWidget/JoystickWidget";
-import MapLockedWidget from "../designDashboard/MapWidget/MapLockedWidget";
 import MapWidget from "../designDashboard/MapWidget/MapWidget";
-import MissionActionLogWidget from "../designDashboard/MissionActionLogWidget/MissionActionLogWidget";
-import MissionButtonGroupWidget from "../designDashboard/MissionButtonGroupWidget/MissionButtonGroupWidget";
-import MissionButtonWidget from "../designDashboard/MissionButtonWidget/MissionButtonWidget";
-import MissionQueueWidget from "../designDashboard/MissionQueueWidget/MissionQueueWidget";
-import PauseContinueWidget from "../designDashboard/PauseContinueWidget/PauseContinueWidget";
+// import MapLockedWidget from "../designDashboard/MapLockedWidget/MapLockedWidget";
+// import Widget from "../designDashboard/Widget/Widget";
+;
+// --- COMPONENT CON (WIDGETS) ---
+// Chúng ta tạo các component con cho sạch sẽ
 
-// TÁCH RIÊNG WidgetRenderer RA NGOÀI VÀ THÊM STYLE TAILWIND
-const WidgetRenderer = React.memo(({ widget }) => {
-  if (widget.render) {
-    return widget.render();
-  } else {
-    // Fallback render (nếu có) được style bằng Tailwind
-    return (
-      <div className="p-4">
-        <h3 className="font-bold text-lg text-foreground">{widget.title}</h3>
-        <p className="text-sm text-muted-foreground">{widget.settings}</p>
-      </div>
-    );
-  }
-});
+// const WidgetRenderer = React.memo(({ widget }) => {
+//   if (widget.render) {
+//     // Gọi hàm render() của đối tượng widget
+//     return widget.render();
+//   }
 
+//   // Fallback (dự phòng) nếu widget không có hàm render
+//   return (
+//     <div className="p-4">
+//       <h3 className="font-bold text-lg text-foreground">{widget.title}</h3>
+//       <p className="text-sm text-muted-foreground">
+//         (Widget type: {widget.type})
+//       </p>
+//     </div>
+//   );
+// });
+
+// // 1. Widget Bản đồ (Cột trái)
+// const MapWidget = () => {
+//   return (
+//     <Card
+//       // row-span-4: Chiếm 4 hàng, col-span-2: Chiếm 2 cột
+//       className="col-span-3 lg:col-span-2 row-span-4 flex flex-col h-full"
+//       theme={{ root: { base: "bg-background flex flex-col h-full" } }}
+//     >
+//       {/* Toolbar của bản đồ (ví dụ) */}
+//       <div className="flex justify-between items-center p-2 border-b border-border">
+//         <span className="font-semibold text-foreground">Map View</span>
+//         {/* Thêm các nút zoom, v.v. ở đây */}
+//       </div>
+//       {/* Khu vực bản đồ (Placeholder) */}
+//       <div className="flex-1 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+//         <FaMapMarkerAlt size={50} className="text-muted-foreground" />
+//       </div>
+//     </Card>
+//   );
+// };
+
+// // 2. Widget TestDock (Xanh lá)
+// const TestDockWidget = () => {
+//   return (
+//     <Card className="bg-green-500 text-white col-span-3 lg:col-span-1">
+//       <div className="flex flex-col items-center justify-center gap-2">
+//         <FaCrosshairs size={30} />
+//         <span className="text-lg font-semibold">TestDock</span>
+//       </div>
+//     </Card>
+//   );
+// };
+
+// // 3. Widget Start Mission (Xanh dương)
+// const StartMissionWidget = () => {
+//   return (
+//     <Card className="bg-gray-800 col-span-3 lg:col-span-1">
+//       <Button color="blue" fullSized>
+//         <FaPlay className="mr-2 h-4 w-4" />
+//         Start Mission
+//       </Button>
+//     </Card>
+//   );
+// };
+
+// // 4. Widget Mission Queue (Hàng chờ)
+// const MissionQueueWidget = () => {
+//   return (
+//     <Card className="col-span-3 lg:col-span-1">
+//       <p className="text-sm text-muted-foreground italic">
+//         Waiting for mission queue...
+//       </p>
+//     </Card>
+//   );
+// };
+
+// // 5. Widget Mission Log (Nhật ký)
+// const MissionLogWidget = () => {
+//   return (
+//     <Card className="col-span-3 lg:col-span-1 row-span-2">
+//       <ListGroup className="border-0">
+//         {/* Mục Error */}
+//         <ListGroupItem className="border-0 p-2 flex items-center gap-2">
+//           <FaTimesCircle className="text-red-500 mr-2" />
+//           <span className="text-xs text-red-500">
+//             Error: ... executing actions.
+//           </span>
+//           <span className="ml-auto text-xs text-blue-500 bg-blue-100 px-2 rounded">
+//             26.02
+//           </span>
+//         </ListGroupItem>
+//         {/* Mục Warning */}
+//         <ListGroupItem className="border-0 p-2 flex items-center gap-2">
+//           <FaExclamationTriangle className="text-yellow-400 mr-2" />
+//           <span className="text-xs text-muted-foreground">
+//             Mission: Sub-mission finished...
+//           </span>
+//           <span className="ml-auto text-xs text-blue-500 bg-blue-100 px-2 rounded">
+//             26.01
+//           </span>
+//         </ListGroupItem>
+//         {/* Mục Success */}
+//         <ListGroupItem className="border-0 p-2 flex items-center gap-2">
+//           <FaCheckCircle className="text-green-500 mr-2" />
+//           <span className="text-xs text-muted-foreground">
+//             Mover: Successfully loaded pose...
+//           </span>
+//           <span className="ml-auto text-xs text-blue-500 bg-blue-100 px-2 rounded">
+//             25.53
+//           </span>
+//         </ListGroupItem>
+//       </ListGroup>
+//     </Card>
+//   );
+// };
+
+// // 6. Widget Nhóm nút Mission
+// const MissionButtonsWidget = () => {
+//   return (
+//     <Card className="col-span-3 lg:col-span-1">
+//       <div className="grid grid-cols-3 gap-2">
+//         <MissionButton icon={<TbTargetArrow />} label="DD_Mission" />
+//         <MissionButton
+//           icon={<TbTargetArrow />}
+//           label="DDE_Mission_Move_To_P1"
+//         />
+//         <MissionButton
+//           icon={<TbTargetArrow />}
+//           label="Go to factorydsdssssssssssssssssssss"
+//         />
+//         {/* Nút này sẽ tự động xuống hàng */}
+//         <MissionButton icon={<TbTargetArrow />} label="Go to asdas" />
+//       </div>
+//     </Card>
+//   );
+// };
+
+// const MissionButton = ({ icon, label }) => {
+//   return (
+//     <button
+//       type="button"
+//       className="w-full flex items-center justify-center gap-2 py-2 px-4
+//                  bg-teal-700 text-white font-semibold rounded-lg shadow-md
+//                  hover:bg-teal-800 focus:outline-none focus:ring-2
+//                  focus:ring-teal-500 focus:ring-opacity-50
+//                  transition-colors duration-200"
+//     >
+//       {/* Icon */}
+//       <div className="flex-shrink-0">{icon}</div>
+
+//       {/* 'truncate' vẫn giữ nguyên để cắt ngắn text nếu cần */}
+//       <span className="truncate">{label}</span>
+//     </button>
+//   );
+// };
+
+// --- COMPONENT CHA (TRANG CHÍNH) ---
 const DashboardView = () => {
-  const { id } = useParams();
+  const { t } = useTranslation();
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const { t } = useTranslation(); // Lấy hàm t
+  const { id } = useParams();
   const [dashboard, setDashboard] = useState(null);
   const [widgets, setWidgets] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchDashboard();
   }, [id]);
-
-  // XÓA BỎ: useEffect áp dụng size bằng DOM
-  // Lý do: Logic render bên dưới đã xử lý việc này bằng inline style,
-  // dùng useEffect là thừa và không phải là "cách của React".
-  useEffect(() => {
-    if (!loading && widgets.length > 0) {
-      // Delay để đảm bảo DOM đã render hoàn toàn
-      const applyTimer = setTimeout(() => {
-        console.log("=== ViewDashboard APPLYING SIZES ===");
-
-        widgets.forEach((widget) => {
-          const hasCustomSize = widget.hasCustomSize
-            ? widget.hasCustomSize()
-            : widget.properties && widget.properties.resized;
-
-          if (hasCustomSize) {
-            const widgetElement = document.querySelector(
-              `[data-widget-id="${widget.id}"]`
-            );
-            if (widgetElement) {
-              const customSize = widget.getSize
-                ? widget.getSize()
-                : widget.properties && widget.properties.resized
-                ? {
-                    width: widget.properties.width,
-                    height: widget.properties.height,
-                  }
-                : null;
-
-              if (customSize) {
-                widgetElement.style.width = `${customSize.width}px`;
-                widgetElement.style.height = `${customSize.height}px`;
-                widgetElement.style.minWidth = `${customSize.width}px`;
-                widgetElement.style.minHeight = `${customSize.height}px`;
-
-                console.log(`✅ Applied DOM size to widget ${widget.id}:`, {
-                  width: customSize.width,
-                  height: customSize.height,
-                  type: widget.type,
-                  title: widget.title,
-                });
-              }
-            } else {
-              console.warn(
-                "⚠️ Widget element not found for size application:",
-                {
-                  widgetId: widget.id,
-                  title: widget.title,
-                  selector: `[data-widget-id="${widget.id}"]`,
-                }
-              );
-            }
-          }
-        });
-      }, 300); // Delay 300ms sau khi loading hoàn tất
-
-      return () => clearTimeout(applyTimer);
-    }
-  }, [loading, widgets.length]);
 
   const fetchDashboard = async () => {
     try {
@@ -112,47 +204,56 @@ const DashboardView = () => {
         setDashboard(data);
 
         if (data.properties && data.properties.widgets) {
-          const loadedWidgets = data.properties.widgets.map((widgetData) => {
-            // ... (toàn bộ logic switch/case của bạn giữ nguyên)
-            let widget;
-            switch (widgetData.type) {
-              case "mission-button":
-                widget = MissionButtonWidget.fromJSON(widgetData);
-                break;
-              case "mission-button-group":
-                widget = MissionButtonGroupWidget.fromJSON(widgetData);
-                break;
-              case "mission-action-log":
-                widget = MissionActionLogWidget.fromJSON(widgetData);
-                break;
-              case "pause-continue":
-                widget = PauseContinueWidget.fromJSON(widgetData);
-                break;
-              case "mission-queue":
-                widget = MissionQueueWidget.fromJSON(widgetData);
-                break;
-              case "io-status":
-              case "io-status-2":
-                widget = IOStatusWidget.fromJSON(widgetData);
-                break;
-              case "joystick":
-                widget = JoystickWidget.fromJSON(widgetData);
-                break;
-              case "map":
-                widget = MapWidget.fromJSON(widgetData);
-                console.log("mapwidget", widgetData);
-                break;
-              case "map-locked":
-                widget = MapLockedWidget.fromJSON(widgetData);
-                break;
-              default:
-                widget = Widget.fromJSON(widgetData);
-            }
-            if (widget && widget.setDisplayMode) {
-              widget.setDisplayMode();
-            }
-            return widget;
-          });
+          const loadedWidgets = data.properties.widgets
+            .filter((w) => {
+              return (
+                w.type === "mission-button-group" ||
+                w.type === "mission-action-log"
+              );
+            })
+            .map((widgetData) => {
+              // ... (toàn bộ logic switch/case của bạn giữ nguyên)
+              console.log("widgetData", widgetData);
+              //   // ... (toàn bộ logic switch/case của bạn giữ nguyên)
+              let widget;
+              switch (widgetData.type) {
+                case "mission-button":
+                  widget = MissionButtonWidget.fromJSON(widgetData);
+                  break;
+                case "mission-button-group":
+                  widget = MissionButtonGroupWidget.fromJSON(widgetData);
+                  break;
+                case "mission-action-log":
+                  widget = MissionActionLogWidget.fromJSON(widgetData);
+                  break;
+                case "pause-continue":
+                  widget = PauseContinueWidget.fromJSON(widgetData);
+                  break;
+                case "mission-queue":
+                  widget = MissionQueueWidget.fromJSON(widgetData);
+                  break;
+                case "io-status":
+                case "io-status-2":
+                  widget = IOStatusWidget.fromJSON(widgetData);
+                  break;
+                case "joystick":
+                  widget = JoystickWidget.fromJSON(widgetData);
+                  break;
+                case "map":
+                  widget = MapWidget.fromJSON(widgetData);
+                  console.log("mapwidget", widgetData);
+                  break;
+                // case "map-locked":
+                //   widget = MapLockedWidget.fromJSON(widgetData);
+                //   break;
+                // default:
+                //   widget = Widget.fromJSON(widgetData);
+              }
+              if (widget && widget.setDisplayMode) {
+                widget.setDisplayMode();
+              }
+              return widget;
+            });
           setWidgets(loadedWidgets);
         }
       }
@@ -162,106 +263,47 @@ const DashboardView = () => {
       setLoading(false);
     }
   };
-
-  const handleEdit = () => {
-    navigate(`/dashboard/design/${id}`, {
-      state: { from: "view", dashboardId: id },
-    });
-  };
-
-   const handleBack = () => {
-     navigate("/dashboard/list");
-   };
-
-  // Giao diện Loading
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-full">
-        <Spinner size="xl" />
-        <span className="ml-4 text-muted-foreground">
-          {t("dashboard.view.loading")}
-        </span>
-      </div>
-    );
-  }
-
-  // Giao diện Lỗi
-  if (!dashboard) {
-    return (
-      <div className="flex justify-center items-center h-full text-red-600">
-        {t("dashboard.view.notFound")}
-      </div>
-    );
-  }
-
-  // Giao diện chính (ĐÃ REFACTOR VỚI TAILWIND & FLOWBITE)
+  console.log("widgets: ", widgets);
   return (
-    <div className="flex flex-col w-full gap-6">
-      {/* === 1. HEADER (Style lại giống trang Create) === */}
+    <div className="flex flex-col w-full gap-4">
+      {/* 1. Header (Tiêu đề) */}
       <div className="flex justify-between items-center">
-        <div className="flex items-center gap-2">
+        <div>
           <h1 className="text-3xl font-bold text-foreground">
-            {dashboard.name}
+            Dashboard: Test
           </h1>
-          <span className="text-muted-foreground pt-1">
-            | {t("dashboard.view.contains", { count: widgets.length })}
-          </span>
+          <p className="text-muted-foreground mt-1">Contains 6 widget(s)</p>
         </div>
-        <div className="flex gap-2">
-          <Button
-            color="light"
-            className="border dark:border-gray-600"
-            onClick={handleEdit}
-          >
-            {t("dashboard.view.openDesigner")}
-          </Button>
+        <div>
+          <Button className="cursor-pointer">Open in DashboardDesigner</Button>
         </div>
       </div>
 
-      {/* === 2. GRID (Style lại bằng Tailwind) === */}
-      <div
-        className="grid grid-cols-4 grid-rows-10 gap-4"
-        // Dùng grid-auto-rows để set chiều cao row tối thiểu
-        // Lấy từ CSS cũ: grid-template-rows: repeat(10, minmax(120px, 1fr));
-        style={{ gridAutoRows: "minmax(120px, 1fr)" }}
-      >
-        {widgets.map((widget) => {
-          // LOGIC STYLE CỦA BẠN (ĐÃ TỐI ƯU)
-          // Logic này xác định VỊ TRÍ và KÍCH THƯỚC
-          const widgetStyle = {
-            gridRow: `${widget.position.row + 1} / span ${widget.rowspan || 1}`,
-            gridColumn: `${widget.position.col + 1} / span ${
-              widget.colspan || 1
-            }`,
-          };
+      {/* 2. Grid Layout */}
+      {/* Grid 3 cột trên desktop (lg:grid-cols-3)
+        Grid 1 cột trên mobile (grid-cols-1)
+        Khoảng cách (gap-4)
+      */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+       
+        {/* <MapWidget /> */}
 
-          const hasCustomSize = widget.properties && widget.properties.resized;
-          if (hasCustomSize) {
-            const customSize = widget.properties;
-            widgetStyle.width = `${customSize.width}px`;
-            widgetStyle.height = `${customSize.height}px`;
-            widgetStyle.minWidth = `${customSize.width}px`;
-            widgetStyle.minHeight = `${customSize.height}px`;
-          }
-
-          // === 3. WIDGET ITEM (Dùng <Card> của Flowbite) ===
-          return (
-            <Card
-              key={widget.id}
-              // Thêm hiệu ứng hover từ CSS cũ
-              className="transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-xl p-0"
-              style={widgetStyle}
-              data-widget-id={widget.id}
-              // Bắt buộc Card phải fill đầy ô grid của nó
-              theme={{ root: { base: "bg-background flex flex-col h-full" } }}
-            >
-              <WidgetRenderer widget={widget} />
-            </Card>
-          );
-        })}
+        <div className="col-span-3 lg:col-span-1 flex flex-col gap-4">
+          {/* <TestDockWidget /> */}
+          {/* <StartMissionWidget /> */}
+          {/* <MissionQueueWidget /> */}
+          
+          {widgets.map((widget, index) => {
+            if (widget.render) {
+              return widget.render();
+            } else {
+              return widget;
+            }
+          })}
+        </div>
       </div>
     </div>
   );
 };
 
-export default React.memo(DashboardView);
+export default DashboardView;

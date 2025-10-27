@@ -8,7 +8,7 @@ import "./lang/i18n.js";
 import { MissionProvider } from "./contexts/MissionContext.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+  // <StrictMode>
     <BrowserRouter>
       <ThemeProvider>
         <MissionProvider>
@@ -16,5 +16,5 @@ createRoot(document.getElementById("root")).render(
         </MissionProvider>
       </ThemeProvider>
     </BrowserRouter>
-  </StrictMode>
+  // </StrictMode>
 );
