@@ -1,5 +1,5 @@
 import React from 'react';
-import MissionButtonWidgetComponent from "./MissionButtonWidgetComponent.jsx";
+// import MissionButtonWidgetComponent from "./MissionButtonWidgetComponent.jsx";
 import { addResizeSupport } from '../common/WidgetResizeMixin.js';
 
 class MissionButtonWidget {
@@ -180,8 +180,10 @@ class MissionButtonWidget {
 
   // Render component React với 2 chế độ hiển thị
   render(onEdit) {
-    return React.createElement(MissionButtonWidgetComponent, { widget: this, onEdit });
+    return React.createElement(Test, { widget: this, onEdit });
   }
 }
-
+const Test = ({ widget, onEdit }) => {
+  return <div>OK</div>
+}
 export default addResizeSupport(MissionButtonWidget); 
