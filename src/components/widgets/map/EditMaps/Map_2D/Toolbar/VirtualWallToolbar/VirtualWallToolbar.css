@@ -1,0 +1,133 @@
+/* Virtual Wall Toolbar Styles */
+.virtual-wall-tools {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    align-items: center;
+    margin-left: 8px;
+    background: none;
+    box-shadow: none;
+    z-index: 1;
+    min-width: auto;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 8px;
+}
+
+.virtual-wall-tools .tool-icon.draw-virtual-wall-icon {
+    background-image: url('../../../../../../../../public/assets/icons/line-segment.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.virtual-wall-tools .cursor-icon {
+    background-image: url('../../../../../../../../public/assets/icons/cursor.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.virtual-wall-tools .tool-icon.virtual-wall-edit-icon {
+    background-image: url('../../../../../../../../public/assets/icons/line-segment-edit.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.virtual-wall-info-bar.select-virtual-wall-info-bar,
+.virtual-wall-info-bar.create-virtual-wall-info-bar {
+    position: absolute;
+    top: 70px;
+    left: 10px;
+    background: #333;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    opacity: 0.8;
+  }
+  
+
+.virtual-wall-tools .delete-icon {
+    position: relative;
+}
+
+
+/* Slider Styles: inline, row, giống floor-tools */
+.virtual-wall-tools .tool-slider {
+    display: none;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border-radius: 0;
+    position: static;
+    box-shadow: none;
+    min-width: 0;
+}
+
+.virtual-wall-tools .slider-value {
+    font-size: 12px;
+    margin: 0;
+    color: #333;
+    font-weight: 500;
+    white-space: nowrap;
+    min-width: 35px;
+    text-align: right;
+    display: inline-block;
+}
+
+.virtual-wall-tools input[type="range"] {
+    width: 80px;
+    height: 4px;
+    border-radius: 2px;
+    background: #ddd;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.virtual-wall-tools input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #007bff;
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.virtual-wall-tools input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #007bff;
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+    .virtual-wall-tools {
+        padding: 6px;
+        flex-wrap: wrap;
+    }
+    .virtual-wall-tools .tool-button {
+        min-width: 35px;
+        min-height: 35px;
+        padding: 6px;
+    }
+    .virtual-wall-tools .tool-slider {
+        flex-direction: column;
+        gap: 4px;
+        margin: 4px 0;
+        padding: 4px;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 4px;
+    }
+    .virtual-wall-tools input[type="range"] {
+        width: 100px;
+    }
+} 

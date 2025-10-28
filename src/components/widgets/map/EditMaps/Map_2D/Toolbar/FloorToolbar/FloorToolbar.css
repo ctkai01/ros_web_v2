@@ -1,0 +1,163 @@
+/* Floor Toolbar Styles */
+.floor-tools {
+    position: relative;
+    display: flex;
+    flex-direction: row; /* Horizontal layout */
+    gap: 4px;
+    align-items: center;
+    margin-left: 8px; /* Reduced margin since it's now in toolbar-left-group */
+    background: none;
+    box-shadow: none;
+    z-index: 1; /* Ensure proper stacking context */
+    min-width: auto; /* Remove min-width constraint */
+    border-left: 1px solid rgba(0, 0, 0, 0.1); /* Add separator line */
+    padding-left: 8px; /* Add padding after separator */
+}
+
+
+
+/* Icon styles */
+.tool-icon.eraser-floor-icon {
+    background-image: url('../../../../../../../../public/assets/icons/eraser-floor.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.tool-icon.polygon-icon {
+    background-image: url('../../../../../../../../public/assets/icons/draw-polygon.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.tool-icon.eraser-floor-setting-icon {
+    background-image: url('../../../../../../../../public/assets/icons/eraser-setting.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.tool-icon.polygon-setting-icon {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23000"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>');
+}
+
+/* Container styles - position dropdowns inline in toolbar */
+.floor-draw-line-container,
+.floor-eraser-container {
+    position: relative; /* Change to relative for proper positioning */
+    display: none;
+    flex-direction: row; /* Horizontal layout */
+    gap: 8px; /* Gap between elements */
+    align-items: center; /* Center align items */
+    padding: 8px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 4px;
+    margin: 2px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    z-index: 1000; /* Higher z-index to appear above other elements */
+    min-width: 200px; /* Min-width for horizontal layout */
+    white-space: nowrap; /* Prevent text wrapping */
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Add border for better visibility */
+}
+
+/* Slider styles */
+.tool-slider {
+    display: none;
+    flex-direction: row; /* Changed from column to row */
+    align-items: center; /* Center align items */
+    gap: 8px; /* Add gap between elements */
+    margin: 0; /* Remove margin since we're in horizontal layout */
+    padding: 0; /* Remove padding since container handles it */
+    background: none; /* Remove background since container handles it */
+    border-radius: 0; /* Remove border radius since container handles it */
+}
+
+.slider-value {
+    font-size: 12px;
+    margin: 0; /* Remove margin */
+    color: #333;
+    font-weight: 500;
+    white-space: nowrap; /* Prevent text wrapping */
+    min-width: 35px; /* Fixed width to prevent slider shifting */
+    text-align: right; /* Right align text for consistent positioning */
+    display: inline-block; /* Ensure width is respected */
+}
+
+.tool-slider input[type="range"] {
+    width: 80px; /* Reduced width for horizontal layout */
+    height: 4px;
+    border-radius: 2px;
+    background: #ddd;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.tool-slider input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #ff8c00; /* Orange color for floor tools */
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.tool-slider input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #ff8c00; /* Orange color for floor tools */
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .floor-tools {
+        padding: 6px;
+        flex-wrap: wrap; /* Allow wrapping on small screens */
+    }
+    
+    .floor-tools .tool-button {
+        min-width: 35px;
+        min-height: 35px;
+        padding: 6px;
+    }
+    
+    /* Adjust dropdown containers for mobile */
+    .floor-draw-line-container,
+    .floor-eraser-container {
+        flex-direction: column; /* Stack vertically on mobile */
+        gap: 4px;
+        min-width: 150px;
+    }
+    
+    .tool-slider {
+        flex-direction: column; /* Stack vertically on mobile */
+        gap: 4px;
+        margin: 4px 0;
+        padding: 4px;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 4px;
+    }
+    
+    .tool-slider input[type="range"] {
+        width: 100px; /* Full width on mobile */
+    }
+}
+
+/* Animation for showing/hiding */
+.floor-tools {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.floor-tools.hidden {
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+}

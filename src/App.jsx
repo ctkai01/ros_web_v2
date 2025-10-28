@@ -1,7 +1,7 @@
 // src/App.jsx
 import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout"; // <-- 1. Import Layout của bạn
-import { DashboardCreate, DashboardHome, DashboardView } from "./pages/dashboard";
+import { DashboardCreate, DashboardDesign, DashboardHome, DashboardView } from "./pages/dashboard";
 
 function App() {
   return (
@@ -18,6 +18,7 @@ function App() {
         <Route path="dashboard/nam" element={<div>Trang của Nam</div>} />
         <Route path="dashboard/create" element={<DashboardCreate />} />
         <Route path="dashboard/view/:id" element={<DashboardView />} />
+        <Route path="dashboard/design/:id" element={<DashboardDesign />} />
 
         {/* <Route path="dashboard" element={<DashboardHome />} />
         <Route path="dashboard/test" element={<div>Test</div>} />

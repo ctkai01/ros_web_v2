@@ -1,0 +1,58 @@
+/* Position Toolbar Styles */
+.position-tools {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    align-items: center;
+    margin-left: 8px;
+    background: none;
+    box-shadow: none;
+    z-index: 1;
+    min-width: auto;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 8px;
+}
+
+
+.position-tools .cursor-icon {
+    background-image: url('../../../../../../../../public/assets/icons/edit-location.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Position specific icons */
+.position-tools .positions-icon {
+    background-image: url('../../../../../../../../public/assets/icons/positions.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.position-tools .position-edit-icon {
+    background-image: url('../../../../../../../../public/assets/icons/position-edit.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.position-tools .delete-icon {
+    position: relative;
+}
+.position-tools .delete-icon::before {
+    font-size: 16px;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .position-tools {
+        padding: 6px;
+        flex-wrap: wrap;
+    }
+    .position-tools .tool-button {
+        min-width: 35px;
+        min-height: 35px;
+        padding: 6px;
+    }
+} 

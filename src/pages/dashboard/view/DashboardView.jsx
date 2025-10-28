@@ -16,28 +16,32 @@ import MissionButtonGroupWidget from "../../../components/widgets/MissionButtonG
 import serverConfig from "../../../config/serverConfig";
 // --- COMPONENT CON (WIDGETS) ---
 // Chúng ta tạo các component con cho sạch sẽ
-import MissionButtonWidget from "../../../components/widgets/missionButton";
-
+import MissionButtonWidgetAA from "../../../components/widgets/missionButton";
+import PauseContinueWidget from "../../../components/widgets/PauseContinueWidget/PauseContinueWidget";
+import MissionButtonWidget from "../../../components/widgets/MissionButtionWidget";
+import MissionQueueWidget from "../../../components/widgets/MissionQueueWidget";
+import MapWidget from "../../../components/widgets/MapWidget";
+;
 // 1. Widget Bản đồ (Cột trái)
-const MapWidget = () => {
-  return (
-    <Card
-      // row-span-4: Chiếm 4 hàng, col-span-2: Chiếm 2 cột
-      className="col-span-3 lg:col-span-2 row-span-4 flex flex-col h-full"
-      theme={{ root: { base: "bg-background flex flex-col h-full" } }}
-    >
-      {/* Toolbar của bản đồ (ví dụ) */}
-      <div className="flex justify-between items-center p-2 border-b border-border">
-        <span className="font-semibold text-foreground">Map View</span>
-        {/* Thêm các nút zoom, v.v. ở đây */}
-      </div>
-      {/* Khu vực bản đồ (Placeholder) */}
-      <div className="flex-1 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-        <FaMapMarkerAlt size={50} className="text-muted-foreground" />
-      </div>
-    </Card>
-  );
-};
+// const MapWidget = () => {
+//   return (
+//     <Card
+//       // row-span-4: Chiếm 4 hàng, col-span-2: Chiếm 2 cột
+//       className="col-span-3 lg:col-span-2 row-span-4 flex flex-col h-full"
+//       theme={{ root: { base: "bg-background flex flex-col h-full" } }}
+//     >
+//       {/* Toolbar của bản đồ (ví dụ) */}
+//       <div className="flex justify-between items-center p-2 border-b border-border">
+//         <span className="font-semibold text-foreground">Map View</span>
+//         {/* Thêm các nút zoom, v.v. ở đây */}
+//       </div>
+//       {/* Khu vực bản đồ (Placeholder) */}
+//       <div className="flex-1 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+//         <FaMapMarkerAlt size={50} className="text-muted-foreground" />
+//       </div>
+//     </Card>
+//   );
+// };
 
 // 2. Widget TestDock (Xanh lá)
 const TestDockWidget = () => {
@@ -64,15 +68,15 @@ const StartMissionWidget = () => {
 };
 
 // 4. Widget Mission Queue (Hàng chờ)
-const MissionQueueWidget = () => {
-  return (
-    <Card className="col-span-3 lg:col-span-1">
-      <p className="text-sm text-muted-foreground italic">
-        Waiting for mission queue...
-      </p>
-    </Card>
-  );
-};
+// const MissionQueueWidget = () => {
+//   return (
+//     <Card className="col-span-3 lg:col-span-1">
+//       <p className="text-sm text-muted-foreground italic">
+//         Waiting for mission queue...
+//       </p>
+//     </Card>
+//   );
+// };
 
 // 5. Widget Mission Log (Nhật ký)
 const MissionLogWidget = () => {
@@ -195,32 +199,35 @@ const DashboardView = () => {
                 case "mission-button":
                   widget = MissionButtonWidget.fromJSON(widgetData);
                   // widget = MissionButtonWidget.fromJSON(widgetData);
+                  // widget = MissionButtonWidget.fromJSON(widgetData);
                   break;
                 case "mission-button-group":
                   widget = MissionButtonGroupWidget.fromJSON(widgetData);
+                  // widget = MissionButtonWidget.fromJSON(widgetData);
                   break;
                 case "mission-action-log":
                   widget = MissionActionLogWidget.fromJSON(widgetData);
+                  // widget = MissionButtonWidget.fromJSON(widgetData);
                   break;
                 case "pause-continue":
-                  // widget = PauseContinueWidget.fromJSON(widgetData);
-                  widget = MissionButtonWidget.fromJSON(widgetData);
+                  widget = PauseContinueWidget.fromJSON(widgetData);
+                  // widget = MissionButtonWidget.fromJSON(widgetData);
                   break;
                 case "mission-queue":
-                  // widget = MissionQueueWidget.fromJSON(widgetData);
-                  widget = MissionButtonWidget.fromJSON(widgetData);
+                  widget = MissionQueueWidget.fromJSON(widgetData);
+                  // widget = MissionButtonWidgetAA.fromJSON(widgetData);
                   break;
                 // case "io-status":
                 case "io-status-2":
-                  widget = MissionButtonWidget.fromJSON(widgetData);
+                  widget = MissionButtonWidgetAA.fromJSON(widgetData);
                   // widget = IOStatusWidget.fromJSON(widgetData);
                   break;
                 case "joystick":
                   // widget = JoystickWidget.fromJSON(widgetData);
-                  widget = MissionButtonWidget.fromJSON(widgetData);
+                  widget = MissionButtonWidgetAA.fromJSON(widgetData);
                   break;
                 case "map":
-                  widget = MissionButtonWidget.fromJSON(widgetData);
+                  widget = MapWidget.fromJSON(widgetData);
                   // widget = MapWidget.fromJSON(widgetData);
                   // console.log("mapwidget", widgetData);
                   break;
@@ -228,7 +235,7 @@ const DashboardView = () => {
                 //   widget = MapLockedWidget.fromJSON(widgetData);
                 //   break;
                 default:
-                  widget = MissionButtonWidget.fromJSON(widgetData);
+                  widget = MissionButtonWidgetAA.fromJSON(widgetData);
                 //   widget = Widget.fromJSON(widgetData);
               }
               if (widget && widget.setDisplayMode) {
@@ -245,6 +252,9 @@ const DashboardView = () => {
       setLoading(false);
     }
   };
+  const handleOpenDashboardDesigner = () => {
+    navigate(`/dashboard/design/${id}`);
+  }
   console.log("widgets: ", widgets);
   return (
     <div className="flex flex-col w-full gap-4">
@@ -257,7 +267,12 @@ const DashboardView = () => {
           <p className="text-muted-foreground mt-1">Contains 6 widget(s)</p>
         </div>
         <div>
-          <Button className="cursor-pointer">Open in DashboardDesigner</Button>
+          <Button
+            onClick={handleOpenDashboardDesigner}
+            className="cursor-pointer"
+          >
+            Open in DashboardDesigner
+          </Button>
         </div>
       </div>
 
@@ -282,19 +297,44 @@ const DashboardView = () => {
       {/* <MissionButtonsWidget /> */}
       <div className="grid grid-cols-4 gap-4 p-4 bg-gray-100">
         {widgets.map((widget, index) => {
-          console.log("widget", widget)
+          console.log("widget", widget);
           console.log("index", index);
-          const widgetClasses = [
-            `col-start-[${widget.position.col + 1}]`, // (col: 0) -> col-start-[1]
-            `row-start-[${widget.position.row + 1}]`, // (row: 0) -> row-start-[1]
-            `col-span-[${widget.colspan}]`, // (colspan: 2) -> col-span-[2]
-            `row-span-[${widget.rowspan}]`, // (rowspan: 4) -> row-span-[4]
-            "bg-white rounded-lg shadow p-2", // Thêm style cơ bản
-          ].join(" ");
+          if (widget.type === "pause-continue") {
+            console.log("widget col span", widget.colspan);
+            console.log("widget row span", widget.rowspan);
+          }
+          // const widgetClasses = [
+          //   `col-start-[${widget.position.col + 1}]`, // (col: 0) -> col-start-[1]
+          //   `row-start-[${widget.position.row + 1}]`, // (row: 0) -> row-start-[1]
+          //   `col-span-[${widget.colspan}]`, // (colspan: 2) -> col-span-[2]
+          //   `row-span-[${widget.rowspan}]`, // (rowspan: 4) -> row-span-[4]
+          //   "bg-white rounded-lg shadow", // Thêm style cơ bản
+          // ].join(" ");
+          const widgetStyle = {
+            // CSS Grid lines are 1-based, your position is 0-based
+            gridColumnStart: widget.position.col + 1,
+            gridRowStart: widget.position.row + 1,
+            // Use gridColumnEnd/gridRowEnd for spanning
+            gridColumnEnd: `span ${widget.colspan || 1}`, // Default to span 1 if undefined
+            gridRowEnd: `span ${widget.rowspan || 1}`, // Default to span 1 if undefined
+          };
+
+          // (Optional) Add your custom size logic here if needed
+          if (widget.properties && widget.properties.resized) {
+            widgetStyle.width = `${widget.properties.width}px`;
+            widgetStyle.height = `${widget.properties.height}px`;
+            widgetStyle.minWidth = `${widget.properties.width}px`;
+            widgetStyle.minHeight = `${widget.properties.height}px`;
+          }
           if (widget.render) {
-            return <div className={widgetClasses}>{widget.render()}</div>;
+            return (
+              <div style={widgetStyle} className="bg-white rounded-lg shadow">
+                {/* <div style={widgetStyle} className={widgetClasses}> */}
+                {widget.render()}
+              </div>
+            );
           } else {
-             return <div className={widgetClasses}>111</div>;
+            return <div className={widgetClasses}>111</div>;
           }
         })}
       </div>

@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 // import MissionActionLogDialog from './MissionActionLogDialog';
-// import MissionQueueStatusIndicator from "../../../../common/MissionQueueStatusIndicator";
-import { Card, ListGroup, ListGroupItem } from "flowbite-react";
+import { ListGroup, ListGroupItem } from "flowbite-react";
 import {
   FaCheckCircle,
   FaExclamationTriangle,
   FaInfoCircle,
   FaTimesCircle,
 } from "react-icons/fa";
+import MissionQueueStatusIndicator from "../../../common/MissionQueueStatusIndicator";
 import serverConfig from "../../../config/serverConfig";
 
 const MissionActionLogWidgetComponent = ({ widget, onEdit }) => {
@@ -23,25 +23,6 @@ const MissionActionLogWidgetComponent = ({ widget, onEdit }) => {
 
   // State for edit dialog
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  // Apply saved size when component mounts (only for display mode)
-  //   useEffect(() => {
-  //     if (widget.displayMode === 'display' && widgetRef.current && widget.properties && widget.properties.resized) {
-  //       const element = widgetRef.current;
-  //       element.style.width = `${widget.properties.width}px`;
-  //       element.style.height = `${widget.properties.height}px`;
-  //       element.style.minWidth = `${widget.properties.width}px`;
-  //       element.style.minHeight = `${widget.properties.height}px`;
-
-  //       console.log('🎯 MissionActionLogWidget: Applied saved size in component:', {
-  //         widgetId: widget.id,
-  //         appliedSize: {
-  //           width: widget.properties.width,
-  //           height: widget.properties.height
-  //         }
-  //       });
-  //     }
-  //   }, [widget.properties, widget.displayMode]);
 
   // Load recent logs from database on component mount
   useEffect(() => {
@@ -310,11 +291,10 @@ const MissionActionLogWidgetComponent = ({ widget, onEdit }) => {
       {mainContent}
       {/* MissionQueueStatusIndicator for receiving mission logs */}
       {widget.displayMode === "display" && (
-        // <MissionQueueStatusIndicator
-        //   onQueueUpdate={null}
-        //   onMissionUpdate={handleMissionUpdate}
-        // />
-        <div>MissionQueueStatusIndicator</div>
+        <MissionQueueStatusIndicator
+          onQueueUpdate={null}
+          onMissionUpdate={handleMissionUpdate}
+        />
       )}
       {/* <MissionActionLogDialog
         isOpen={isDialogOpen}
@@ -367,23 +347,59 @@ const MissionActionLogWidgetComponent = ({ widget, onEdit }) => {
     const filteredLogs = getFilteredLogs();
     console.log("filteredLogs: ", filteredLogs);
     return (
-      <Card
-        className="col-span-3 lg:col-span-1 row-span-2"
-        // 1. THAY ĐỔI: Ép Card lấp đầy chiều cao và dùng flex-col
-        // Điều này rất quan trọng để "flex-1" bên dưới hoạt động
-        theme={{ root: { base: "flex flex-col h-full" } }}
+      // <Card
+      //   className="col-span-3 lg:col-span-1 row-span-2"
+      //   // 1. THAY ĐỔI: Ép Card lấp đầy chiều cao và dùng flex-col
+      //   // Điều này rất quan trọng để "flex-1" bên dưới hoạt động
+      //   theme={{ root: { base: "flex flex-col h-full" } }}
+      // >
+      //   {filteredLogs.length === 0 ? (
+      //     // 2. THAY ĐỔI: Thêm "flex-1" để "empty state" căn giữa
+      //     <div className="flex-1 flex flex-col items-center justify-center text-muted-foreground">
+      //       <div className="text-4xl">📝</div> {/* Làm icon to hơn */}
+      //       <div className="mt-2 text-sm">No log entries available</div>
+      //     </div>
+      //   ) : (
+      //     // 3. THAY ĐỔI: Thêm "flex-1" và "overflow-y-auto"
+      //     // - "flex-1": Lấp đầy không gian còn lại trong Card
+      //     // - "overflow-y-auto": Tự động hiển thị thanh cuộn khi nội dung tràn
+      //     <ListGroup className="border-0 flex-1 overflow-y-auto">
+      //       {filteredLogs.map((entry, index) => {
+      //         return (
+      //           <ListGroupItem
+      //             key={entry.id || index}
+      //             className="border-0 p-2 flex items-center gap-2"
+      //           >
+      //             {getLogLevelIcon(entry.level)}
+      //             <span className="text-xs text-muted-foreground">
+      //               {entry.message}
+      //             </span>
+      //             <span className="ml-auto text-xs text-blue-500 bg-blue-100 px-2 rounded">
+      //               {showTimestamp && formatTimestamp(entry.timestamp)}
+      //             </span>
+      //           </ListGroupItem>
+      //         );
+      //       })}
+      //     </ListGroup>
+      //   )}
+      // </Card>
+      <div
+      // className="col-span-3 lg:col-span-1 row-span-2"
+      // Keep flex-col h-full to ensure the Card fills its grid area
+      // and the empty state centers correctly.
+      // theme={{ root: { base: "flex flex-col h-full" } }}
       >
         {filteredLogs.length === 0 ? (
-          // 2. THAY ĐỔI: Thêm "flex-1" để "empty state" căn giữa
+          // Empty state remains the same, using flex-1 to center vertically
           <div className="flex-1 flex flex-col items-center justify-center text-muted-foreground">
-            <div className="text-4xl">📝</div> {/* Làm icon to hơn */}
+            <div className="text-4xl">📝</div>
             <div className="mt-2 text-sm">No log entries available</div>
           </div>
         ) : (
-          // 3. THAY ĐỔI: Thêm "flex-1" và "overflow-y-auto"
-          // - "flex-1": Lấp đầy không gian còn lại trong Card
-          // - "overflow-y-auto": Tự động hiển thị thanh cuộn khi nội dung tràn
-          <ListGroup className="border-0 flex-1 overflow-y-auto">
+          // **CHANGED HERE:**
+          // - REMOVED `flex-1`
+          // - ADDED `max-h-[500px]`
+          <ListGroup className="border-0 overflow-y-auto p-1 max-h-[300px]">
             {filteredLogs.map((entry, index) => {
               return (
                 <ListGroupItem
@@ -402,7 +418,7 @@ const MissionActionLogWidgetComponent = ({ widget, onEdit }) => {
             })}
           </ListGroup>
         )}
-      </Card>
+      </div>
       // <Card className="col-span-3 lg:col-span-1 row-span-2 flex flex-col h-full">
       //   <div className="flex-1 overflow-y-auto space-y-2 pr-2">
       //     {filteredLogs.map((entry, index) => {

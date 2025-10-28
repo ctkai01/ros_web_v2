@@ -184,6 +184,13 @@ class MissionButtonWidget {
   }
 }
 const Test = ({ widget, onEdit }) => {
-  return <div>OK</div>
+  return (
+    <div>
+      <p>Colspan: {widget.colspan}</p>
+      <p>Rowspan: {widget.rowspan}</p>
+      <p>Position row: {widget.position.row}</p>
+      <p>Position col: {widget.position.col}</p>
+    </div>
+  );
 }
 export default addResizeSupport(MissionButtonWidget); 
