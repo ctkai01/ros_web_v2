@@ -3,6 +3,7 @@ import { useState } from "react";
 import { FaEdit } from "react-icons/fa"; // Import Edit icon
 import serverConfig from "../../../config/serverConfig";
 import { TbTargetArrow } from "react-icons/tb";
+import { MissionDesignCard } from "../../common";
 
 const MissionButtonWidgetComponent = ({ widget, onEdit }) => {
   // --- State and Logic (Keep most of this) ---
@@ -90,56 +91,15 @@ const MissionButtonWidgetComponent = ({ widget, onEdit }) => {
   // --- RENDER DESIGN MODE ---
   if (isDesign) {
     return (
-      <div
-        className={`
-          relative flex flex-col h-full w-full p-4 rounded-lg
-          border-2 border-dashed border-gray-400 dark:border-gray-600
-          bg-background dark:bg-gray-700 cursor-grab
-          ${
-            widget.isActive ? "border-green-500 ring-2 ring-green-300" : ""
-          } // Example active state highlight
-        `}
-        data-widget-id={widget.id}
-      >
-        {/* Header */}
-        <div className="flex justify-between items-start mb-2">
-          <div>
-            <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-400 truncate">
-              {widget.title}
-            </h3>
-            <p className="text-xs text-muted-foreground dark:text-gray-500 truncate">
-              {widget.settings.missionName || "No mission"}
-            </p>
-          </div>
-        </div>
-
-        {/* Placeholder Content */}
-        <div className="flex-1 flex items-center justify-center text-gray-400 dark:text-gray-500">
-          {/* Simple placeholder */}
-          <div className="text-center">
-            <img
-              src="/assets/icons/target-white.png" // Use a placeholder icon, adjust path
-              alt="Mission Icon"
-              className="w-10 h-10 mx-auto opacity-30"
-            />
-            <p className="text-xs italic mt-1">Mission Button</p>
-          </div>
-        </div>
-
-        {/* Edit Button */}
-        {onEdit && (
-          <button
-            className="absolute top-2 right-2 p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            onClick={(e) => {
-              e.stopPropagation();
-              onEdit(widget.id);
-            }} // Prevent drag start on edit click
-            title="Edit widget"
-          >
-            <FaEdit />
-          </button>
-        )}
-      </div>
+      <MissionDesignCard
+        onEdit={() => onEdit(widget.id)}
+        subtitle={`${
+          widget.settings.missionName
+            ? widget.settings.missionName
+            : "No mission"
+        }`}
+        title={widget.title}
+      />
     );
   }
 

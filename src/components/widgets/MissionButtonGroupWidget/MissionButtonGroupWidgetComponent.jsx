@@ -2,8 +2,8 @@ import { Card, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { TbTargetArrow } from "react-icons/tb";
 import serverConfig from "../../../config/serverConfig";
+import { MissionDesignCard } from "../../common";
 import MissionButton from "./MissionButton";
-
 const MissionButtonGroupWidgetComponent = ({ widget, onEdit }) => {
   const [executingMissions, setExecutingMissions] = useState(new Set());
   const [pendingRequests, setPendingRequests] = useState(new Set()); // Track pending requests
@@ -60,32 +60,6 @@ const MissionButtonGroupWidgetComponent = ({ widget, onEdit }) => {
       loadGroupMissions(widget.settings.groupId);
     }
   }, [widget.settings.groupId]);
-
-  // Monitor container size changes for responsive layout
-  // useEffect(() => {
-  //   const updateContainerSize = () => {
-  //     const container = document.querySelector('.mission-button-group-widget');
-  //     if (container) {
-  //       const rect = container.getBoundingClientRect();
-  //       setContainerSize({ width: rect.width, height: rect.height });
-  //     }
-  //   };
-
-  //   // Initial size measurement
-  //   updateContainerSize();
-
-  //   // Set up resize observer for dynamic size changes
-  //   const resizeObserver = new ResizeObserver(updateContainerSize);
-  //   const container = document.querySelector('.mission-button-group-widget');
-  //   if (container) {
-  //     resizeObserver.observe(container);
-  //   }
-
-  //   // Cleanup
-  //   return () => {
-  //     resizeObserver.disconnect();
-  //   };
-  // }, []);
 
   // Handle mission button click
   const handleMissionClick = async (mission) => {
@@ -213,6 +187,13 @@ const MissionButtonGroupWidgetComponent = ({ widget, onEdit }) => {
   // };
 
   if (widget.isDesignMode()) {
+    return (
+      <MissionDesignCard
+        onEdit={() => onEdit(widget.id)}
+        subtitle={`Group ID: ${widget.settings.groupId} | Group Name: ${widget.settings.groupName}`}
+        title={widget.title}
+      />
+    );
     return (
       <div className="mission-button-group-widget design-mode">
         <div className="widget-header">

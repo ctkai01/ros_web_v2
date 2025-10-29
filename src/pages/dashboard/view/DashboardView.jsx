@@ -17,8 +17,8 @@ import serverConfig from "../../../config/serverConfig";
 // --- COMPONENT CON (WIDGETS) ---
 // Chúng ta tạo các component con cho sạch sẽ
 import MissionButtonWidgetAA from "../../../components/widgets/missionButton";
-import PauseContinueWidget from "../../../components/widgets/PauseContinueWidget/PauseContinueWidget";
-import MissionButtonWidget from "../../../components/widgets/MissionButtionWidget";
+import PauseContinueWidget from "../../../components/widgets/PauseContinueWidget/";
+import MissionButtonWidget from "../../../components/widgets/MissionButtonWidget";
 import MissionQueueWidget from "../../../components/widgets/MissionQueueWidget";
 import MapWidget from "../../../components/widgets/MapWidget";
 ;

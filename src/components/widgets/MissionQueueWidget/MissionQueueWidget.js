@@ -1,28 +1,35 @@
-import React from 'react';
-import MissionQueueWidgetComponent from './MissionQueueWidgetComponent.jsx';
-import { addResizeSupport } from '../common/WidgetResizeMixin.js';
+import React from "react";
+import { addResizeSupport } from "../../common/WidgetResizeMixin.js";
+import MissionQueueWidgetComponent from "./MissionQueueWidgetComponent.jsx";
 
 class MissionQueueWidget {
   constructor(config = {}) {
     this.id = config.id || this.generateId();
-    this.type = 'mission-queue';
-    this.title = config.title || 'Mission Queue';
-    this.settings = config.settings || 'No settings';
+    this.type = "mission-queue";
+    this.title = config.title || "Mission Queue";
+    this.settings = config.settings || "No settings";
     this.position = config.position || { row: 0, col: 0 };
     this.colspan = config.colspan || 1;
     this.rowspan = config.rowspan || 1;
-    this.size = config.size || { width: 'auto', height: 'auto' };
-    this.displayMode = config.displayMode || 'design';
+    this.size = config.size || { width: "auto", height: "auto" };
+    this.displayMode = config.displayMode || "design";
     this.missions = config.missions || [];
     this.currentMissionIndex = config.currentMissionIndex || 0;
     this.maxQueueSize = config.maxQueueSize || 10;
-    this.autoExecute = config.autoExecute !== undefined ? config.autoExecute : true;
-    this.isExecuting = config.isExecuting !== undefined ? config.isExecuting : false;
+    this.autoExecute =
+      config.autoExecute !== undefined ? config.autoExecute : true;
+    this.isExecuting =
+      config.isExecuting !== undefined ? config.isExecuting : false;
     this.properties = config.properties || {}; // Thêm properties để lưu resize info
   }
 
   generateId() {
-    return 'mission-queue-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+    return (
+      "mission-queue-" +
+      Date.now() +
+      "-" +
+      Math.random().toString(36).substr(2, 9)
+    );
   }
 
   isMissionButton() {
@@ -30,44 +37,44 @@ class MissionQueueWidget {
   }
 
   isEmpty() {
-    return this.type === 'empty';
+    return this.type === "empty";
   }
 
   // Add mission to queue
   addMission(mission) {
     if (this.missions.length >= this.maxQueueSize) {
-      console.warn('Mission queue is full');
+      console.warn("Mission queue is full");
       return false;
     }
 
     const missionItem = {
       id: Date.now() + Math.random(),
-      name: mission.name || 'Unnamed Mission',
-      priority: mission.priority || 'normal', // 'high', 'normal', 'low'
-      status: 'pending', // 'pending', 'executing', 'completed', 'failed', 'cancelled'
+      name: mission.name || "Unnamed Mission",
+      priority: mission.priority || "normal", // 'high', 'normal', 'low'
+      status: "pending", // 'pending', 'executing', 'completed', 'failed', 'cancelled'
       addedAt: new Date(),
       estimatedDuration: mission.estimatedDuration || null,
-      description: mission.description || '',
-      progress: 0
+      description: mission.description || "",
+      progress: 0,
     };
 
     this.missions.push(missionItem);
-    console.log('Mission added to queue:', missionItem.name);
+    console.log("Mission added to queue:", missionItem.name);
     return true;
   }
 
   // Remove mission from queue
   removeMission(missionId) {
-    const index = this.missions.findIndex(m => m.id === missionId);
+    const index = this.missions.findIndex((m) => m.id === missionId);
     if (index !== -1) {
       const removedMission = this.missions.splice(index, 1)[0];
-      console.log('Mission removed from queue:', removedMission.name);
-      
+      console.log("Mission removed from queue:", removedMission.name);
+
       // Adjust current index if needed
       if (index < this.currentMissionIndex) {
         this.currentMissionIndex--;
       }
-      
+
       return true;
     }
     return false;
@@ -75,9 +82,12 @@ class MissionQueueWidget {
 
   // Move mission up in queue
   moveMissionUp(missionId) {
-    const index = this.missions.findIndex(m => m.id === missionId);
+    const index = this.missions.findIndex((m) => m.id === missionId);
     if (index > 0) {
-      [this.missions[index], this.missions[index - 1]] = [this.missions[index - 1], this.missions[index]];
+      [this.missions[index], this.missions[index - 1]] = [
+        this.missions[index - 1],
+        this.missions[index],
+      ];
       return true;
     }
     return false;
@@ -85,9 +95,12 @@ class MissionQueueWidget {
 
   // Move mission down in queue
   moveMissionDown(missionId) {
-    const index = this.missions.findIndex(m => m.id === missionId);
+    const index = this.missions.findIndex((m) => m.id === missionId);
     if (index < this.missions.length - 1 && index !== -1) {
-      [this.missions[index], this.missions[index + 1]] = [this.missions[index + 1], this.missions[index]];
+      [this.missions[index], this.missions[index + 1]] = [
+        this.missions[index + 1],
+        this.missions[index],
+      ];
       return true;
     }
     return false;
@@ -109,8 +122,8 @@ class MissionQueueWidget {
       this.isExecuting = true;
       const currentMission = this.getCurrentMission();
       if (currentMission) {
-        currentMission.status = 'executing';
-        console.log('Started executing mission:', currentMission.name);
+        currentMission.status = "executing";
+        console.log("Started executing mission:", currentMission.name);
       }
       return true;
     }
@@ -121,9 +134,9 @@ class MissionQueueWidget {
   stopExecution() {
     this.isExecuting = false;
     const currentMission = this.getCurrentMission();
-    if (currentMission && currentMission.status === 'executing') {
-      currentMission.status = 'pending';
-      console.log('Stopped executing mission:', currentMission.name);
+    if (currentMission && currentMission.status === "executing") {
+      currentMission.status = "pending";
+      console.log("Stopped executing mission:", currentMission.name);
     }
     return true;
   }
@@ -132,35 +145,35 @@ class MissionQueueWidget {
   completeCurrentMission() {
     const currentMission = this.getCurrentMission();
     if (currentMission) {
-      currentMission.status = 'completed';
+      currentMission.status = "completed";
       currentMission.progress = 100;
-      console.log('Mission completed:', currentMission.name);
-      
+      console.log("Mission completed:", currentMission.name);
+
       this.currentMissionIndex++;
-      
+
       // Auto start next mission if enabled
       if (this.autoExecute && this.currentMissionIndex < this.missions.length) {
         const nextMission = this.getCurrentMission();
         if (nextMission) {
-          nextMission.status = 'executing';
-          console.log('Auto-started next mission:', nextMission.name);
+          nextMission.status = "executing";
+          console.log("Auto-started next mission:", nextMission.name);
         }
       } else {
         this.isExecuting = false;
       }
-      
+
       return true;
     }
     return false;
   }
 
   // Fail current mission
-  failCurrentMission(reason = '') {
+  failCurrentMission(reason = "") {
     const currentMission = this.getCurrentMission();
     if (currentMission) {
-      currentMission.status = 'failed';
+      currentMission.status = "failed";
       currentMission.failureReason = reason;
-      console.log('Mission failed:', currentMission.name, reason);
+      console.log("Mission failed:", currentMission.name, reason);
       this.isExecuting = false;
       return true;
     }
@@ -170,12 +183,15 @@ class MissionQueueWidget {
   // Clear completed missions
   clearCompleted() {
     const initialLength = this.missions.length;
-    this.missions = this.missions.filter(m => m.status !== 'completed');
+    this.missions = this.missions.filter((m) => m.status !== "completed");
     const removedCount = initialLength - this.missions.length;
-    
+
     // Adjust current index
-    this.currentMissionIndex = Math.max(0, this.currentMissionIndex - removedCount);
-    
+    this.currentMissionIndex = Math.max(
+      0,
+      this.currentMissionIndex - removedCount
+    );
+
     console.log(`Cleared ${removedCount} completed missions`);
     return removedCount;
   }
@@ -185,7 +201,7 @@ class MissionQueueWidget {
     this.missions = [];
     this.currentMissionIndex = 0;
     this.isExecuting = false;
-    console.log('All missions cleared');
+    console.log("All missions cleared");
     return true;
   }
 
@@ -193,11 +209,11 @@ class MissionQueueWidget {
   getStats() {
     const stats = {
       total: this.missions.length,
-      pending: this.missions.filter(m => m.status === 'pending').length,
-      executing: this.missions.filter(m => m.status === 'executing').length,
-      completed: this.missions.filter(m => m.status === 'completed').length,
-      failed: this.missions.filter(m => m.status === 'failed').length,
-      cancelled: this.missions.filter(m => m.status === 'cancelled').length
+      pending: this.missions.filter((m) => m.status === "pending").length,
+      executing: this.missions.filter((m) => m.status === "executing").length,
+      completed: this.missions.filter((m) => m.status === "completed").length,
+      failed: this.missions.filter((m) => m.status === "failed").length,
+      cancelled: this.missions.filter((m) => m.status === "cancelled").length,
     };
     return stats;
   }
@@ -205,41 +221,51 @@ class MissionQueueWidget {
   // Get mission icon based on status
   getMissionIcon(status) {
     switch (status) {
-      case 'pending': return '⏳';
-      case 'executing': return '🔄';
-      case 'completed': return '✅';
-      case 'failed': return '❌';
-      case 'cancelled': return '⏹️';
-      default: return '📋';
+      case "pending":
+        return "⏳";
+      case "executing":
+        return "🔄";
+      case "completed":
+        return "✅";
+      case "failed":
+        return "❌";
+      case "cancelled":
+        return "⏹️";
+      default:
+        return "📋";
     }
   }
 
   // Get priority icon
   getPriorityIcon(priority) {
     switch (priority) {
-      case 'high': return '🔴';
-      case 'normal': return '🟡';
-      case 'low': return '🟢';
-      default: return '⚪';
+      case "high":
+        return "🔴";
+      case "normal":
+        return "🟡";
+      case "low":
+        return "🟢";
+      default:
+        return "⚪";
     }
   }
 
   setDesignMode() {
-    this.displayMode = 'design';
+    this.displayMode = "design";
     return this;
   }
 
   setDisplayMode() {
-    this.displayMode = 'display';
+    this.displayMode = "display";
     return this;
   }
 
   isDesignMode() {
-    return this.displayMode === 'design';
+    return this.displayMode === "design";
   }
 
   isDisplayMode() {
-    return this.displayMode === 'display';
+    return this.displayMode === "display";
   }
 
   clone() {
@@ -251,12 +277,12 @@ class MissionQueueWidget {
       colspan: this.colspan,
       size: { ...this.size },
       displayMode: this.displayMode,
-      missions: [...this.missions.map(m => ({ ...m }))],
+      missions: [...this.missions.map((m) => ({ ...m }))],
       currentMissionIndex: this.currentMissionIndex,
       maxQueueSize: this.maxQueueSize,
       autoExecute: this.autoExecute,
       isExecuting: this.isExecuting,
-      properties: { ...this.properties } // Thêm properties vào clone
+      properties: { ...this.properties }, // Thêm properties vào clone
     });
   }
 
@@ -276,7 +302,7 @@ class MissionQueueWidget {
       maxQueueSize: this.maxQueueSize,
       autoExecute: this.autoExecute,
       isExecuting: this.isExecuting,
-      properties: this.properties // Thêm properties vào JSON
+      properties: this.properties, // Thêm properties vào JSON
     };
   }
 
@@ -295,12 +321,15 @@ class MissionQueueWidget {
       maxQueueSize: data.maxQueueSize,
       autoExecute: data.autoExecute,
       isExecuting: data.isExecuting,
-      properties: data.properties // Thêm properties từ JSON
+      properties: data.properties, // Thêm properties từ JSON
     });
   }
 
   render(onEdit) {
-    return React.createElement(MissionQueueWidgetComponent, { widget: this, onEdit });
+    return React.createElement(MissionQueueWidgetComponent, {
+      widget: this,
+      onEdit,
+    });
   }
 
   // Check if widget can handle its own edit
@@ -310,7 +339,7 @@ class MissionQueueWidget {
 
   // renderDesignMode() {
   //   return (
-  //     <div 
+  //     <div
   //       className="mission-queue-widget design-mode"
   //       data-widget-id={this.id}
   //     >
@@ -320,7 +349,7 @@ class MissionQueueWidget {
   //           <p className="widget-settings">{this.settings}</p>
   //         </div>
   //       </div>
-        
+
   //       <div className="queue-content design-preview">
   //         <div className="queue-item sample">
   //           <span className="mission-icon">⏳</span>
@@ -344,9 +373,9 @@ class MissionQueueWidget {
 
   // renderDisplayMode() {
   //   const stats = this.getStats();
-    
+
   //   return (
-  //     <div 
+  //     <div
   //       className="mission-queue-widget display-mode"
   //       data-widget-id={this.id}
   //     >
@@ -355,16 +384,16 @@ class MissionQueueWidget {
   //           <h3 className="widget-title">{this.title}</h3>
   //           <p className="widget-settings">{this.settings}</p>
   //         </div>
-          
+
   //         <div className="queue-stats">
   //           <span className="stat-item">Total: {stats.total}</span>
   //           <span className="stat-item pending">Pending: {stats.pending}</span>
   //           {stats.executing > 0 && <span className="stat-item executing">Executing: {stats.executing}</span>}
   //         </div>
   //       </div>
-        
+
   //       <div className="queue-controls">
-  //         <button 
+  //         <button
   //           className={`control-btn ${this.isExecuting ? 'stop' : 'start'}`}
   //           onClick={() => this.isExecuting ? this.stopExecution() : this.startExecution()}
   //           disabled={this.missions.length === 0}
@@ -372,8 +401,8 @@ class MissionQueueWidget {
   //         >
   //           {this.isExecuting ? '⏹️' : '▶️'}
   //         </button>
-          
-  //         <button 
+
+  //         <button
   //           className="control-btn clear"
   //           onClick={() => this.clearCompleted()}
   //           disabled={stats.completed === 0}
@@ -381,8 +410,8 @@ class MissionQueueWidget {
   //         >
   //           🗑️
   //         </button>
-          
-  //         <button 
+
+  //         <button
   //           className="control-btn add"
   //           onClick={() => this.addMission({ name: 'New Mission', priority: 'normal' })}
   //           disabled={this.missions.length >= this.maxQueueSize}
@@ -391,7 +420,7 @@ class MissionQueueWidget {
   //           ➕
   //         </button>
   //       </div>
-        
+
   //       <div className="queue-content">
   //         {this.missions.length === 0 ? (
   //           <div className="empty-queue">
@@ -400,8 +429,8 @@ class MissionQueueWidget {
   //           </div>
   //         ) : (
   //           this.missions.map((mission, index) => (
-  //             <div 
-  //               key={mission.id} 
+  //             <div
+  //               key={mission.id}
   //               className={`queue-item ${mission.status} ${index === this.currentMissionIndex ? 'current' : ''}`}
   //             >
   //               <span className="mission-icon">{this.getMissionIcon(mission.status)}</span>
@@ -412,8 +441,8 @@ class MissionQueueWidget {
   //                 )}
   //                 {mission.status === 'executing' && (
   //                   <div className="progress-bar">
-  //                     <div 
-  //                       className="progress-fill" 
+  //                     <div
+  //                       className="progress-fill"
   //                       style={{ width: `${mission.progress}%` }}
   //                     ></div>
   //                   </div>
@@ -422,9 +451,9 @@ class MissionQueueWidget {
   //               <span className="priority-icon" title={`Priority: ${mission.priority}`}>
   //                 {this.getPriorityIcon(mission.priority)}
   //               </span>
-                
+
   //               <div className="mission-actions">
-  //                 <button 
+  //                 <button
   //                   className="action-btn up"
   //                   onClick={() => this.moveMissionUp(mission.id)}
   //                   disabled={index === 0 || mission.status === 'executing'}
@@ -432,7 +461,7 @@ class MissionQueueWidget {
   //                 >
   //                   ⬆️
   //                 </button>
-  //                 <button 
+  //                 <button
   //                   className="action-btn down"
   //                   onClick={() => this.moveMissionDown(mission.id)}
   //                   disabled={index === this.missions.length - 1 || mission.status === 'executing'}
@@ -440,7 +469,7 @@ class MissionQueueWidget {
   //                 >
   //                   ⬇️
   //                 </button>
-  //                 <button 
+  //                 <button
   //                   className="action-btn remove"
   //                   onClick={() => this.removeMission(mission.id)}
   //                   disabled={mission.status === 'executing'}
@@ -459,4 +488,4 @@ class MissionQueueWidget {
 }
 
 // Thêm resize support và export
-export default addResizeSupport(MissionQueueWidget); 
+export default addResizeSupport(MissionQueueWidget);

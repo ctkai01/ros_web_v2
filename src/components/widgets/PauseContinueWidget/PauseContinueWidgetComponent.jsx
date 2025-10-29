@@ -1,9 +1,10 @@
 import { Spinner } from "flowbite-react"; // 1. Import Spinner
 import { useEffect, useRef, useState } from "react";
-import { FaEdit, FaPause, FaPlay } from "react-icons/fa"; // 2. Import Icons
+import { FaPause, FaPlay } from "react-icons/fa"; // 2. Import Icons
 
 import { SERVER_URL } from "../../../config/serverConfig"; // Giữ nguyên config
 import { useMissionContext } from "../../../contexts/MissionContext"; // Giữ nguyên context
+import { MissionDesignCard } from "../../common";
 
 const PauseContinueWidgetComponent = ({ widget, onEdit }) => {
   const widgetRef = useRef(null);
@@ -96,43 +97,11 @@ const PauseContinueWidgetComponent = ({ widget, onEdit }) => {
   // Chế độ Design
   if (widget.isDesignMode()) {
     return (
-      <div
-        ref={widgetRef}
-        // Style Design Mode bằng Tailwind
-        className="relative flex flex-col h-full w-full p-4 border-2 border-dashed border-gray-400 bg-gray-100 dark:bg-gray-700 dark:border-gray-600 rounded-lg"
-        data-widget-id={widget.id}
-      >
-        {/* Header (nếu cần) */}
-        <div className="flex justify-between items-start mb-2">
-          <div>
-            <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-400">
-              {widget.title}
-            </h3>
-            {/* <p className="text-xs text-gray-500 dark:text-gray-500">{widget.settings}</p> */}
-          </div>
-        </div>
-
-        {/* Placeholder cho nút bấm */}
-        <div className="flex-1 flex items-center justify-center">
-          <div className="flex flex-col items-center gap-2 p-4 border-2 border-dashed border-gray-400 dark:border-gray-600 rounded-lg bg-gray-200 dark:bg-gray-600 text-gray-500 dark:text-gray-400 opacity-70">
-            <FaPlay size={24} />
-            <span className="text-sm font-semibold italic">
-              Action Button Preview
-            </span>
-          </div>
-        </div>
-
-        {/* Nút Edit (nếu có) */}
-        {onEdit && (
-          <button
-            className="absolute top-2 right-2 p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded hover:bg-gray-200 dark:hover:bg-gray-600"
-            onClick={() => onEdit(widget.id)}
-            title="Edit Widget"
-          >
-            <FaEdit />
-          </button>
-        )}
-      </div>
+      <MissionDesignCard
+        onEdit={() => onEdit(widget.id)}
+        subtitle={`${widget.settings}`}
+        title={widget.title}
+      />
     );
   }
 

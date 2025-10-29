@@ -1,22 +1,22 @@
-import React from 'react';
-import './MapWidget.css';
-import MapWidgetComponent from './MapWidgetComponent';
-import { addResizeSupport } from '../common/WidgetResizeMixin';
+import React from "react";
+import { addResizeSupport } from "../../common/WidgetResizeMixin";
+import "./MapWidget.css";
+import MapWidgetComponent from "./MapWidgetComponent";
 
 class MapWidget {
   constructor(config = {}) {
     this.id = config.id || this.generateId();
-    this.type = 'map';
-    this.title = config.title || 'Map';
-    this.settings = config.settings || 'No settings';
+    this.type = "map";
+    this.title = config.title || "Map";
+    this.settings = config.settings || "No settings";
     this.position = config.position || { row: 0, col: 0 };
     this.colspan = config.colspan || 3;
     this.rowspan = config.rowspan || 3;
-    this.displayMode = config.displayMode || 'design';
+    this.displayMode = config.displayMode || "design";
   }
 
   generateId() {
-    return 'map-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+    return "map-" + Date.now() + "-" + Math.random().toString(36).substr(2, 9);
   }
 
   isMissionButton() {
@@ -24,7 +24,7 @@ class MapWidget {
   }
 
   isEmpty() {
-    return this.type === 'empty';
+    return this.type === "empty";
   }
 
   updateData(data) {
@@ -32,21 +32,21 @@ class MapWidget {
   }
 
   setDesignMode() {
-    this.displayMode = 'design';
+    this.displayMode = "design";
     return this;
   }
 
   setDisplayMode() {
-    this.displayMode = 'display';
+    this.displayMode = "display";
     return this;
   }
 
   isDesignMode() {
-    return this.displayMode === 'design';
+    return this.displayMode === "design";
   }
 
   isDisplayMode() {
-    return this.displayMode === 'display';
+    return this.displayMode === "display";
   }
 
   clone() {
@@ -97,4 +97,4 @@ class MapWidget {
 }
 
 // Thêm resize support và export
-export default addResizeSupport(MapWidget); 
+export default addResizeSupport(MapWidget);

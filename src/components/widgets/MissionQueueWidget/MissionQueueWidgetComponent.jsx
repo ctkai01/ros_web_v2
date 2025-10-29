@@ -23,6 +23,7 @@ import { CSS } from "@dnd-kit/utilities";
 // Other imports
 import MissionQueueStatusIndicator from "../../../common/MissionQueueStatusIndicator"; // Giả sử component này đã được style
 import serverConfig from "../../../config/serverConfig";
+import { MissionDesignCard } from "../../common";
 
 // --- Helper Functions ---
 
@@ -425,34 +426,11 @@ const MissionQueueWidgetComponent = ({ widget, onEdit }) => {
   // --- RENDER DESIGN MODE ---
   if (widget.displayMode !== "display") {
     return (
-      <div
-        className="
-          relative flex flex-col h-full w-full p-4 rounded-lg
-          border-2 border-dashed border-gray-400 dark:border-gray-600
-          bg-background dark:bg-gray-700 cursor-grab text-center
-        "
-        data-widget-id={widget.id}
-        style={customStyle}
-      >
-        <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-400 truncate">
-          {widget.title}
-        </h3>
-        <div className="flex-1 flex items-center justify-center text-gray-400 dark:text-gray-500">
-          <p className="text-xs italic">Mission Queue</p>
-        </div>
-        {onEdit && (
-          <button
-            className="absolute top-2 right-2 p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            onClick={(e) => {
-              e.stopPropagation();
-              onEdit(widget.id);
-            }}
-            title="Edit widget"
-          >
-            <FaEdit />
-          </button>
-        )}
-      </div>
+      <MissionDesignCard
+        onEdit={() => onEdit(widget.id)}
+        subtitle={`${widget.settings}`}
+        title={widget.title}
+      />
     );
   }
 

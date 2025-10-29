@@ -1,8 +1,9 @@
 import { useEffect, useRef } from "react";
 import serverConfig from "../../../config/serverConfig";
+import { MissionDesignCard } from "../../common";
+import "../map/EditMaps/EditMaps.css";
 import { Map2D } from "../map/EditMaps/Map_2D/Map_2D";
 import "./MapWidget.css";
-import "../map/EditMaps/EditMaps.css";
 // Global variables for storing current site and map IDs
 let globalCurrentSiteId = null;
 let globalCurrentMapId = null;
@@ -937,33 +938,40 @@ const MapWidgetComponent = ({ widget, onEdit }) => {
 
 const renderDesignMode = (widget, onEdit, containerRef) => {
   return (
-    <div
-      ref={containerRef}
-      className="map-widget design-mode"
-      data-widget-id={widget.id}
-      style={{
-        gridColumn: `span ${widget.colspan}`,
-        gridRow: `span ${widget.rowspan}`,
+    <MissionDesignCard
+      onEdit={() => {
+        onEdit(widget.id);
       }}
-    >
-      <div className="widget-header">
-        <div className="widget-info">
-          <h3 className="widget-title">{widget.title}</h3>
-          <p className="widget-settings">{widget.settings}</p>
-        </div>
-      </div>
-      {onEdit && (
-        <button
-          className="widget-edit-btn"
-          onClick={() => {
-            onEdit(widget.id);
-          }}
-          title="Edit widget"
-        >
-          <span className="edit-icon"></span>
-        </button>
-      )}
-    </div>
+      title={widget.title}
+      subtitle={widget.settings}
+    />
+    // <div
+    //   ref={containerRef}
+    //   className="map-widget design-mode"
+    //   data-widget-id={widget.id}
+    //   style={{
+    //     gridColumn: `span ${widget.colspan}`,
+    //     gridRow: `span ${widget.rowspan}`,
+    //   }}
+    // >
+    //   <div className="widget-header">
+    //     <div className="widget-info">
+    //       <h3 className="widget-title">{widget.title}</h3>
+    //       <p className="widget-settings">{widget.settings}</p>
+    //     </div>
+    //   </div>
+    //   {onEdit && (
+    //     <button
+    //       className="widget-edit-btn"
+    //       onClick={() => {
+    //         onEdit(widget.id);
+    //       }}
+    //       title="Edit widget"
+    //     >
+    //       <span className="edit-icon"></span>
+    //     </button>
+    //   )}
+    // </div>
   );
 };
 

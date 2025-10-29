@@ -1,7 +1,7 @@
 import React from "react";
 // import "./PauseContinueWidget.css";
+import { addResizeSupport } from "../../common/WidgetResizeMixin.js";
 import PauseContinueWidgetComponent from "./PauseContinueWidgetComponent.jsx";
-import { addResizeSupport } from "../common/WidgetResizeMixin";
 
 class PauseContinueWidget {
   constructor(config = {}) {
@@ -159,7 +159,7 @@ class PauseContinueWidget {
       >
         <div className="widget-header">
           <div className="widget-info">
-            <h3 className="widget-title">{this.title}</h3>
+            <h3 className="widget-title">{this.title} dsds</h3>
             <p className="widget-settings">{this.settings}</p>
           </div>
         </div>

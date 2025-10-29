@@ -1,19 +1,37 @@
-import React from "react";
 // 1. Import các component của Flowbite
-import { Button, Card, Badge, Tabs, Dropdown, DropdownItem, TabItem } from "flowbite-react";
+import {
+  Badge,
+  Button,
+  Card,
+  Dropdown,
+  DropdownItem,
+  TabItem,
+  Tabs,
+} from "flowbite-react";
+import { useEffect, useState } from "react";
 // 2. Import các icon cần thiết
 import {
+  FaEllipsisH, // Icons cho các nút
+  FaMap,
+  FaPen, // Icons cho các tab
+  FaPlus,
   FaSave,
+  FaTasks,
   FaTimes,
   FaTrash,
-  FaPen, // Icons cho các nút
-  FaMap,
-  FaTasks,
   FaWaveSquare,
-  FaEllipsisH, // Icons cho các tab
-  FaPlus, // Icon cho Dropdown Item
 } from "react-icons/fa";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import MapWidget from "../../../components/widgets/MapWidget";
+import MissionButtonWidgetAA from "../../../components/widgets/missionButton";
+import MissionButtonGroupWidget from "../../../components/widgets/MissionButtonGroupWidget";
+import PauseContinueWidget from "../../../components/widgets/PauseContinueWidget";
+import MissionQueueWidget from "../../../components/widgets/MissionQueueWidget";
+import MissionButtonWidget from "../../../components/widgets/MissionButtonWidget";
 
+import serverConfig from "../../../config/serverConfig";
+import widgetRegistry from "./initWidgetRegistry";
+import { ConfirmDialog, SuccessDialog } from "../../../components/common/";
 /**
  * Một component Card có thể tái sử dụng cho mỗi widget
  * (Giữ nguyên như code trước)
@@ -39,7 +57,96 @@ const WidgetCard = ({ title, children }) => {
 /**
  * Component chính cho toàn bộ giao diện
  */
-const DashboardEditor = () => {
+const DashboardDesign = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { from, dashboardId } = location.state || {};
+  const [dashboard, setDashboard] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [openDropdown, setOpenDropdown] = useState(null);
+  const [editingWidget, setEditingWidget] = useState(null);
+
+  const [activeDialog, setActiveDialog] = useState(null);
+  const [dialogProps, setDialogProps] = useState({});
+  const [widgets, setWidgets] = useState([]);
+  //   const widgetsRef = useRef(widgets);
+  const [isResizing, setIsResizing] = useState(false);
+  const [resizingWidget, setResizingWidget] = useState(null);
+  const [resizeStartPos, setResizeStartPos] = useState({ x: 0, y: 0 });
+  const [originalSize, setOriginalSize] = useState({ colspan: 1, rowspan: 1 });
+  const [resizePreview, setResizePreview] = useState(null);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  useEffect(() => {
+    fetchDashboard();
+  }, [id]);
+
+  const fetchDashboard = async () => {
+    try {
+      const response = await fetch(
+        `${serverConfig.SERVER_URL}/api/dashboards/${id}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setDashboard(data);
+        if (data.properties && data.properties.widgets) {
+          const loadedWidgets = data.properties.widgets.map((widgetData) => {
+            let widget;
+            switch (widgetData.type) {
+              case "mission-button":
+                widget = MissionButtonWidget.fromJSON(widgetData);
+                // widget = MissionButtonWidgetAA.fromJSON(widgetData);
+                break;
+              case "mission-action-log":
+                // widget = MissionActionLogWidget.fromJSON(widgetData);
+                widget = MissionButtonWidgetAA.fromJSON(widgetData);
+                break;
+              case "pause-continue":
+                widget = PauseContinueWidget.fromJSON(widgetData);
+                // widget = MissionButtonWidgetAA.fromJSON(widgetData);
+                break;
+              case "mission-queue":
+                widget = MissionQueueWidget.fromJSON(widgetData);
+                // widget = MissionButtonWidgetAA.fromJSON(widgetData);
+                break;
+              case "mission-button-group":
+                widget = MissionButtonGroupWidget.fromJSON(widgetData);
+                // widget = MissionButtonWidgetAA.fromJSON(widgetData);
+                break;
+              case "io-status":
+              case "io-status-2":
+                // widget = MissionButtonWidgetAA.fromJSON(widgetData);
+                widget = MissionButtonWidgetAA.fromJSON(widgetData);
+                break;
+              case "joystick":
+                // widget = MissionButtonWidgetAA.fromJSON(widgetData);
+                widget = MissionButtonWidgetAA.fromJSON(widgetData);
+                break;
+              case "map":
+                widget = MapWidget.fromJSON(widgetData);
+                // widget = MissionButtonWidgetAA.fromJSON(widgetData);
+                break;
+              case "map-locked":
+                // widget = MissionButtonWidgetAA.fromJSON(widgetData);
+                widget = MissionButtonWidgetAA.fromJSON(widgetData);
+                break;
+              default:
+                widget = MissionButtonWidgetAA.fromJSON(widgetData);
+            }
+            widget.displayMode = "design";
+            return widget;
+          });
+          setWidgets(loadedWidgets);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching dashboard:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   // --- Helper: Tạo label cho Dropdown ---
   // Hàm này giúp tạo ra label có icon và chữ, dùng cho mỗi Dropdown
   const createDropdownLabel = (Icon, text) => (
@@ -49,12 +156,104 @@ const DashboardEditor = () => {
     </div>
   );
 
+  const handleDialogSave = (widgetId, data) => {
+    setWidgets((prevWidgets) =>
+      prevWidgets.map((widget) => {
+        if (widget.id === widgetId) {
+          const updatedWidget = widget.clone();
+          if (typeof updatedWidget.updateSettings === "function") {
+            updatedWidget.updateSettings(data);
+          } else {
+            Object.assign(updatedWidget, data);
+          }
+          return updatedWidget;
+        }
+        return widget;
+      })
+    );
+    handleDialogClose();
+  };
+
+  const handleDialogClose = () => {
+    setActiveDialog(null);
+    setDialogProps({});
+    setEditingWidget(null);
+  };
+
+  const handleDialogDelete = (widgetId) => {
+    const updatedWidgets = widgets.filter((widget) => widget.id !== widgetId);
+    setWidgets(updatedWidgets);
+    widgetRegistry.handleWidgetDelete(widgetId);
+    handleDialogClose();
+  };
+
+  const handleWidgetEdit = (widgetId) => {
+    console.log("handleWidgetEdit called with widgetId:", widgetId);
+    const widget = widgets.find((w) => w.id === widgetId);
+    console.log("Found widget:", widget);
+    const editResult = widgetRegistry.handleWidgetEdit(widget.id, widget);
+    console.log("editResult: ", editResult);
+    if (editResult.hasDialog) {
+      const finalDialogProps = {
+        ...editResult.dialogProps,
+        isOpen: true,
+        onClose: handleDialogClose,
+        onSave: (data) => handleDialogSave(widget.id, data),
+        onDelete: () => handleDialogDelete(widget.id),
+      };
+      setActiveDialog(() => editResult.dialogComponent);
+      setDialogProps(finalDialogProps);
+    } else {
+      console.log(
+        "Widget edit requested but no dialog registered:",
+        widget.type
+      );
+    }
+  };
+  const renderActiveDialog = () => {
+    if (!activeDialog || !dialogProps.isOpen) {
+      return null;
+    }
+    const DialogComponent = activeDialog;
+    return <DialogComponent {...dialogProps} />;
+  };
+
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(
+        `${serverConfig.SERVER_URL}/api/dashboards/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (response.ok) {
+        window.dispatchEvent(
+          new CustomEvent("dashboardDeleted", {
+            detail: { dashboardId: id },
+          })
+        );
+        if (from === "view") {
+          navigate(`/dashboard/view/${dashboardId || id}`);
+        } else {
+          navigate("/dashboard/list");
+        }
+      }
+    } catch (error) {
+      console.error("Error deleting dashboard:", error);
+      alert("Failed to delete dashboard");
+    }
+  };
+
+  const closeDeleteConfirm = () => {
+    setShowDeleteConfirm(false);
+  };
+  console.log("widgets: ", widgets);
   return (
     <div className="bg-gray-100 dark:bg-gray-900 min-h-screen">
       {/* 1. Thanh Header Tabs */}
       <div className="bg-white shadow-sm border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 px-4 lg:px-6">
         {/* --- ĐÃ CẬP NHẬT: MỖI TAB LÀ MỘT DROPDOWN --- */}
-        <Tabs aria-label="Dashboard tabs" >
+        <Tabs aria-label="Dashboard tabs">
           {/* Dropdown "Maps" */}
           <TabItem
             active // Tab Maps đang được chọn
@@ -133,36 +332,64 @@ const DashboardEditor = () => {
           </div>
         </div>
 
-        {/* 4. Grid Layout chính */}
-        {/* Nội dung này sẽ được hiển thị khi tab "Maps" active.
-           Bạn cần dùng state để thay đổi nội dung này khi click các tab khác.
-        */}
-        <div className="flex flex-col lg:flex-row gap-4">
-          <div className="w-full lg:w-2/3">
-            <WidgetCard title="Map">No settings</WidgetCard>
-          </div>
-          <div className="w-full lg:w-1/3 flex flex-col gap-4">
-            <WidgetCard title="Mission Button Group">
-              Group ID: 1 | Group Name: Move
-            </WidgetCard>
-            <div className="grid grid-cols-2 gap-4">
-              <WidgetCard title="Mission Control">
-                Pause/Continue Mission
-              </WidgetCard>
-              <WidgetCard title="Mission Queue">No settings</WidgetCard>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <WidgetCard title="Mission Button">TestDock</WidgetCard>
-              <WidgetCard title="Mission Action Log">
-                Limit: 10 | Auto Scroll: true | ShowTimestamp: true | Filter
-                Level: all
-              </WidgetCard>
-            </div>
-          </div>
+        <div className="grid grid-cols-4 gap-4 p-4 bg-gray-100 dark:bg-gray-800">
+          {widgets.map((widget, index) => {
+            const widgetStyle = {
+              // CSS Grid lines are 1-based, your position is 0-based
+              gridColumnStart: widget.position.col + 1,
+              gridRowStart: widget.position.row + 1,
+              // Use gridColumnEnd/gridRowEnd for spanning
+              gridColumnEnd: `span ${widget.colspan || 1}`, // Default to span 1 if undefined
+              gridRowEnd: `span ${widget.rowspan || 1}`, // Default to span 1 if undefined
+            };
+
+            // (Optional) Add your custom size logic here if needed
+            if (widget.properties && widget.properties.resized) {
+              widgetStyle.width = `${widget.properties.width}px`;
+              widgetStyle.height = `${widget.properties.height}px`;
+              widgetStyle.minWidth = `${widget.properties.width}px`;
+              widgetStyle.minHeight = `${widget.properties.height}px`;
+            }
+            if (widget.render) {
+              return (
+                <div
+                  style={widgetStyle}
+                  className="bg-white rounded-lg shadow dark:bg-gray-700"
+                  // className="bg-white rounded-lg shadow dark:bg-gray-700"
+                >
+                  {/* <div style={widgetStyle} className={widgetClasses}> */}
+                  {widget.render(handleWidgetEdit)}
+                </div>
+              );
+            } else {
+              return <div className={widgetClasses}>111</div>;
+            }
+          })}
         </div>
+        {renderActiveDialog()}
+        <SuccessDialog
+          visible={showSuccessDialog}
+          title="Success"
+          message="Dashboard saved successfully!"
+          details="All widgets and their configurations have been saved to the database."
+          onClose={() => setShowSuccessDialog(false)}
+          buttonText="OK"
+        />
+        <ConfirmDialog
+          visible={showDeleteConfirm}
+          title="Confirm Delete"
+          message={`Are you sure you want to delete dashboard "${
+            dashboard?.name || "Dashboard"
+          }"?`}
+          onConfirm={() => {
+            handleDelete();
+            closeDeleteConfirm();
+          }}
+          onCancel={closeDeleteConfirm}
+        />
       </div>
     </div>
   );
 };
 
-export default DashboardEditor;
+export default DashboardDesign;

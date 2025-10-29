@@ -1,5 +1,5 @@
 import React from "react";
-import { addResizeSupport } from "../common/WidgetResizeMixin";
+import { addResizeSupport } from "../../common/WidgetResizeMixin.js";
 import MissionButtonGroupWidgetComponent from "./MissionButtonGroupWidgetComponent.jsx";
 
 class MissionButtonGroupWidget {
